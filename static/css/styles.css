@@ -1,0 +1,16 @@
+
+
+body{
+  background-color: #0A2513;
+}
+
+  .h_portada {
+    color: #12ff46;
+    font-size: 72px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: bold;
+  }
+  .img {
+    transform: scale(0.6);
+  }
+  

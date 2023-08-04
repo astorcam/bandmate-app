@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Enlace al archivo CSS de Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Enlace a tu archivo styles.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="container">
+        <nav class="navbar navbar-light">
+          <form class="form-inline">
+            <button onclick="window.location.href='{{ url_for('login') }}'" class="btn btn-outline-success" type="button">Comenzar</button>
+          </form>
+        </nav>
+        <div class='row'>
+          <div class='col'>
+           <img src="{{ url_for('static', filename='img/logo_letras.png') }}" alt="logo">
+            <h1 class='h_portada'>CONECTA.</h1>
+            <h1 class='h_portada'>CREA.</h1>
+            <h1 class='h_portada'>EXPRESA.</h1>
+          </div>
+          <div class='col'>
+            <img src="{{ url_for('static', filename='img/img_portada.png') }}" alt="portada">
+          </div>
+          <div class='row'>
+  </div>
+</body>
+</html>
