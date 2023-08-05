@@ -9,10 +9,10 @@
 <body style='background-color: #12ff46'>
     <div class="container">
       <div class='row'>
-        <div class='col-6'>
+        <div class='col'>
           <img src="{{ url_for('static', filename='img/img_login.png') }}" alt="logo">
         </div>
-        <div class='col-6'>
+        <div class='col'>
           <img class='img' src="{{ url_for('static', filename='img/logo_letras_2.png') }}" alt="portada">
           <form>
             <div class="form-group">
@@ -23,9 +23,9 @@
               <label for="exampleInputPassword1">Contraseña</label>
               <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" style='margin-top: 5px; margin-bottom: 10px;  width: 40%;'>
             </div>
-                <button type="submit" class="btn btn-secondary" style='margin-top: 10px; background-color: #8d7563; width: 20%;' >Iniciar sesión</button>
-                <button type="submit" class="btn btn-secondary" style='margin-top: 10px; background-color: #8d7563; width: 20%;' >Registrarse</button> 
-          </form>
+                <button type="submit" class="btn btn" style='margin-top: 10px; background-color: #8d7563; width: 20%;' >Iniciar sesión</button>
+                <button onclick="window.location.href='{{ url_for('registro') }}'" type="button" class="btn btn" style='margin-top: 10px; background-color: #8d7563; width: 20%;' >Registrarse</button>
+              </form>
         </div>
       </div>
     </div>

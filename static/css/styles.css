@@ -13,4 +13,12 @@ body{
   .img {
     transform: scale(0.6);
   }
+  .container_reg {
+    background-color: #12ff46;
+    width: 600px;
+    height: 850px;
+    margin: 0 auto; /* Centra el contenedor en la pantalla */
+    padding: 20px; /* Espacio alrededor del formulario dentro del contenedor */
+    border-radius: 10px; /* Borde redondeado */
+}
   

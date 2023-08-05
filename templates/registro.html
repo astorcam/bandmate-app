@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Enlace al archivo CSS de Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Enlace a tu archivo styles.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="container_reg"> 
+    <form>
+        <form>
+            <div class="form-row">
+                <img src="{{ url_for('static', filename='img/logo_letras_2.png') }}" alt="logo">
+              <div class="col-md-4 mb-3">
+                <label for="validationDefault01">Nombre</label>
+                <input type="text" class="form-control" id="validationDefault01" placeholder="Nombre" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationDefault02">Correo electrónico</label>
+                <input type="text" class="form-control" id="validationDefault02" placeholder="Correo electrónico" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationDefault02">Contraseña</label>
+                <input type="text" class="form-control" id="validationDefault02" placeholder="Contraseña" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationDefault02">Dirección</label>
+                <input type="text" class="form-control" id="validationDefault02" placeholder="Dirección" required>
+              </div>
+                    <label for="validationDefault02">Género musical</label>
+                    <select class="form-control">
+                        <option selected>Elige género musical</option>
+                        <option>Rock</option>
+                        <option>Heavy Metal</option>
+                        <option>Pop</option>
+                        <option>Jazz</option>
+                        <option>Rap</option>
+                        <option>Flamenco</option>
+                    </select>
+                </div>
+                <br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <label class="form-check-label" for="inlineRadio1">Músico</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2">Banda</label>
+                  </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="validationDefault03">City</label>
+                <input type="text" class="form-control" id="validationDefault03" placeholder="City" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationDefault04">State</label>
+                <input type="text" class="form-control" id="validationDefault04" placeholder="State" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationDefault05">Zip</label>
+                <input type="text" class="form-control" id="validationDefault05" placeholder="Zip" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                <label class="form-check-label" for="invalidCheck2">
+                  Agree to terms and conditions
+                </label>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit form</button>
+          </form>
+  </div>
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
