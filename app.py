@@ -26,6 +26,10 @@ def login():
 def registro():
     return render_template('registro.html')
 
+@app.route('/ayuda')
+def ayuda():
+    return render_template('ayuda.html')
+
 """ @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':

@@ -11,68 +11,173 @@
     <form>
         <form>
             <div class="form-row">
-                <img src="{{ url_for('static', filename='img/logo_letras_2.png') }}" alt="logo">
-              <div class="col-md-4 mb-3">
-                <label for="validationDefault01">Nombre</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="Nombre" required>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="validationDefault02">Correo electrónico</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Correo electrónico" required>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="validationDefault02">Contraseña</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Contraseña" required>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="validationDefault02">Dirección</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Dirección" required>
-              </div>
-                    <label for="validationDefault02">Género musical</label>
-                    <select class="form-control">
-                        <option selected>Elige género musical</option>
-                        <option>Rock</option>
-                        <option>Heavy Metal</option>
-                        <option>Pop</option>
-                        <option>Jazz</option>
-                        <option>Rap</option>
-                        <option>Flamenco</option>
-                    </select>
+                  <img src="{{ url_for('static', filename='img/logo_letras_2.png') }}" alt="logo">
+                <div class="col-md-4 mb-3">
+                  <label for="validationDefault01">Nombre</label>
+                  <input type="text" class="form-control" id="validationDefault01" placeholder="Nombre" required>
                 </div>
+                <div class="col-md-4 mb-3">
+                  <label for="validationDefault02">Correo electrónico</label>
+                  <input type="text" class="form-control" id="validationDefault02" placeholder="Correo electrónico" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="validationDefault02">Contraseña</label>
+                  <input type="text" class="form-control" id="validationDefault02" placeholder="Contraseña" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="validationDefault02">Dirección</label>
+                  <input type="text" class="form-control" id="validationDefault02" placeholder="Dirección" required>
+                </div>
+                    <label for="validationDefault02">Tu género musical</label>
+                    <select class="form-control">
+                        <option selected>Elige...</option>
+                        <option>Alternative</option>
+                        <option>Blues</option>
+                        <option>Bachata</option>
+                        <option>Country</option>
+                        <option>Cumbia</option>
+                        <option>Classical</option>
+                        <option>Electronic / EDM</option>
+                        <option>Funk</option>
+                        <option>Flamenco</option>
+                        <option>Heavy Metal</option>
+                        <option>Hip-Hop / Rap</option>
+                        <option>Indie</option>
+                        <option>Jazz</option>
+                        <option>Metal</option>
+                        <option>Merengue</option>
+                        <option>Pop</option>
+                        <option>Punk</option>
+                        <option>R&B / Soul</option>
+                        <option>Reggae</option>
+                        <option>Reggaeton</option>
+                        <option>Rock</option>
+                        <option>Salsa</option>
+                        <option>Soul</option>
+                        <option>Tango</option>
+                        <option>Techno</option>
+                        <option>Trance</option>
+                        <option>Trap</option>
+                        <option>Tropical</option>
+                        <option>Vallenato</option>
+                    </select>
+                    <br>
+                    <label for="validationDefault02">Qué género musical buscas</label>
+                    <select class="form-control">
+                        <option selected>Elige...</option>
+                        <option>Alternative</option>
+                        <option>Blues</option>
+                        <option>Bachata</option>
+                        <option>Country</option>
+                        <option>Cumbia</option>
+                        <option>Classical</option>
+                        <option>Electronic / EDM</option>
+                        <option>Funk</option>
+                        <option>Flamenco</option>
+                        <option>Heavy Metal</option>
+                        <option>Hip-Hop / Rap</option>
+                        <option>Indie</option>
+                        <option>Jazz</option>
+                        <option>Metal</option>
+                        <option>Merengue</option>
+                        <option>Pop</option>
+                        <option>Punk</option>
+                        <option>R&B / Soul</option>
+                        <option>Reggae</option>
+                        <option>Reggaeton</option>
+                        <option>Rock</option>
+                        <option>Salsa</option>
+                        <option>Soul</option>
+                        <option>Tango</option>
+                        <option>Techno</option>
+                        <option>Trance</option>
+                        <option>Trap</option>
+                        <option>Tropical</option>
+                        <option>Vallenato</option>
+                    </select>
                 <br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                    <label class="form-check-label" for="inlineRadio1">Músico</label>
-                  </div>
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                  <label class="form-check-label" for="inlineRadio1">Músico</label>
+              </div>              
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                     <label class="form-check-label" for="inlineRadio2">Banda</label>
                   </div>
+                  <br>
+                  <div id="formulario1" style="display: none;">
+                    <form>
+                        <label for="validationDefault02">Sexo</label>
+                        <select class="form-control">
+                            <option selected>Elige...</option>
+                            <option>Mujer</option>
+                            <option>Hombre</option>
+                            <option>No binario</option>
+                        </select>
+                        <br>
+                        <div class="col-md-4 mb-3">
+                          <label for="validationDefault01">Edad</label>
+                          <input type="text" class="form-control" id="validationDefault01" placeholder="Edad" required>
+                        </div>
+                        <label for="validationDefault02">Instrumento musical</label>
+                        <select class="form-control">
+                            <option selected>Elige...</option>
+                            <option>Acordeón</option>
+                            <option>Arpa</option>
+                            <option>Bajo</option>
+                            <option>Batería</option>
+                            <option>Cantante</option>
+                            <option>Cello</option>
+                            <option>Clarinete</option>
+                            <option>Contrabajo</option>
+                            <option>Flauta</option>
+                            <option>Guitarra</option>
+                            <option>Órgano</option>
+                            <option>Percusión</option>
+                            <option>Piano</option>
+                            <option>Saxofón</option>
+                            <option>Teclado</option>
+                            <option>Trombón</option>
+                            <option>Trompa</option>
+                            <option>Trompeta</option>
+                            <option>Viola</option>
+                            <option>Violín</option>
+                        </select>
+                        <br>
+                    </form>
+                  </div>
+                  <div id="formulario2" style="display: none;">
+                    <form>
+                      <label for="validationDefault02">Qué instrumento buscas</label>
+                        <select class="form-control">
+                            <option selected>Elige...</option>
+                            <option>Acordeón</option>
+                            <option>Arpa</option>
+                            <option>Bajo</option>
+                            <option>Batería</option>
+                            <option>Cantante</option>
+                            <option>Cello</option>
+                            <option>Clarinete</option>
+                            <option>Contrabajo</option>
+                            <option>Flauta</option>
+                            <option>Guitarra</option>
+                            <option>Órgano</option>
+                            <option>Percusión</option>
+                            <option>Piano</option>
+                            <option>Saxofón</option>
+                            <option>Teclado</option>
+                            <option>Trombón</option>
+                            <option>Trompa</option>
+                            <option>Trompeta</option>
+                            <option>Viola</option>
+                            <option>Violín</option>
+                        </select>
+                    </form>
+                  </div>
+                  <br>
+                  <button class="btn btn-primary" style='background-color: #8d7563;' type="submit">Resgistrarse</button>
               </div>
             </div>
-            <div class="form-row">
-              <div class="col-md-6 mb-3">
-                <label for="validationDefault03">City</label>
-                <input type="text" class="form-control" id="validationDefault03" placeholder="City" required>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="validationDefault04">State</label>
-                <input type="text" class="form-control" id="validationDefault04" placeholder="State" required>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="validationDefault05">Zip</label>
-                <input type="text" class="form-control" id="validationDefault05" placeholder="Zip" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-                <label class="form-check-label" for="invalidCheck2">
-                  Agree to terms and conditions
-                </label>
-              </div>
-            </div>
-            <button class="btn btn-primary" type="submit">Submit form</button>
           </form>
   </div>
   <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>

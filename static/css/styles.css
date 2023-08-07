@@ -1,7 +1,12 @@
-
-
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500");
+/* #12ff46
+  #1fbb11
+ */
 body{
   background-color: #0A2513;
+  overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
 }
 
   .h_portada {
@@ -10,15 +15,104 @@ body{
     font-family: 'DM Sans', sans-serif;
     font-weight: bold;
   }
+  .p_ayuda {
+    color: #12ff46;
+    font-size: 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: bold;
+  }
+  .p_ayuda_t {
+    color: #ffffff;
+    font-size: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .p_ayuda_t2 {
+    color: #12ff46;
+    font-size: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
   .img {
     transform: scale(0.6);
   }
   .container_reg {
     background-color: #12ff46;
-    width: 600px;
-    height: 850px;
     margin: 0 auto; /* Centra el contenedor en la pantalla */
     padding: 20px; /* Espacio alrededor del formulario dentro del contenedor */
     border-radius: 10px; /* Borde redondeado */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 650px;
+    width: 100%;
 }
-  
+
+
+/* Toggle Styles */
+
+#viewport {
+  padding-left: 350px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#content {
+  width: 100%;
+  position: relative;
+  margin-right: 0;
+}
+
+/* Sidebar Styles */
+
+#sidebar {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 300px;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  background: #1fbb11;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#sidebar header {
+  background-color: #12ff46;
+  font-size: 20px;
+  line-height: 52px;
+  text-align: center;
+}
+
+#sidebar header a {
+  color: #fff;
+  display: block;
+  text-decoration: none;
+}
+
+#sidebar header a:hover {
+  color: #fff;
+}
+
+#sidebar .nav a {
+  background: none;
+  border-bottom: 2px solid #455a64;
+  color: #cfd8dc;
+  font-size: 25px;
+  padding: 2px 40px;
+}
+
+
+#sidebar .nav a:hover {
+  background: none;
+  color: #eceff1;
+}
+
+#sidebar .nav a i {
+  margin-right: 16px;
+}
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Enlace al archivo CSS de Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Enlace a tu archivo styles.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div id="viewport">
+        <!-- Sidebar -->
+        <div id="sidebar">
+          <header>
+            <img class='img' src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+          </header>
+          <ul class="nav">
+            <li>
+              <a href="#">
+                <i class="bi bi-house-door-fill"></i>  Inicio
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="bi bi-person-fill"></i> Perfil
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="bi bi-chat-dots-fill"></i> Chats
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="bi bi-gear-fill"></i> Configuración
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="bi bi-info-circle-fill"></i> Ayuda
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Content -->
+        <div id="content">
+          <div class="container">
+            <div class='row'>
+                <div class='col'>
+                    <h1 class='h_portada'>Ayuda</h1>
+                    <p class='p_ayuda'>
+                        ¿QUÉ ES BANDMATE?
+                    </p>
+                    <p class='p_ayuda_t'>
+                        BandMate es una plataforma en la que podrás conectar con músicos o bandas de tu alrededor y colaborar en lo que ambos amáis: la música.
+                    </p>
+                    <br>
+                    <p class='p_ayuda'>
+                        ¿CÓMO FUNCIONA BANDMATE?
+                    </p>
+                    <p class='p_ayuda_t2'>
+                        1.Registro de usuario:
+                    </p>
+                        <li class='p_ayuda_t'>Accede a la página web de Bandmate y haz clic en el botón "Registrarse".
+                        </li>
+                        <li class='p_ayuda_t'>Completa el formulario de registro con tus datos personales, como nombre, correo electrónico y contraseña.
+                        </li>
+                        <li class='p_ayuda_t'>Haz clic en "Registrarse" para crear tu cuenta.
+                        </li>  
+                    <br>                      
+                    <p class='p_ayuda_t2'>
+                        2.Explorar perfiles y bandas:
+                    </p>
+                    <li class='p_ayuda_t'>Una vez registrado/a e iniciada la sesión, podrás explorar los perfiles de otros músicos y bandas.
+                    </li>
+                    <li class='p_ayuda_t'>Configura los filtros  para una búsqueda mas afín a tus gustos y preferencias, como género musical, instrumento o ubicación.
+                    </li>
+                    <li class='p_ayuda_t'>Haz clic en los perfiles o bandas para ver su información detallada, como géneros musicales, instrumentos buscados o experiencia.
+                    </li> 
+                    <br>  
+                    <p class='p_ayuda_t2'>
+                        3.Crear tu perfil:
+                    </p>
+                    <li class='p_ayuda_t'>En tu perfil, descríbete como músico, cuales son tus influencias, tu experiencia, tus habilidades y tus géneros musicales favoritos.
+                    </li>
+                    <li class='p_ayuda_t'>Sube fotos, videos, incluso audios para que otros músicos y bandas puedan conocerte visualmente y escuchar como tocas.
+                    </li>
+                    <br>  
+                    <p class='p_ayuda_t2'>
+                        4.Mensajería :
+                    </p>
+                    <li class='p_ayuda_t'>Si tienes "match" con algún musico o alguna banda, podrás abrir un chat con ellos y empezar a organizar vuestro próximo ensayo, proyecto o colaboración musical.
+                    </li> 
+                </div>
+                <div class='col'>
+                    <img src="{{ url_for('static', filename='img/img_ayuda1.png') }}" alt="portada">
+                    <img src="{{ url_for('static', filename='img/img_ayuda2.png') }}" alt="portada">
+                    <p class='p_ayuda'>
+                        CONTACTO
+                    </p>
+                    <p class='p_ayuda_t'> BANDMATE@MUSIC.COM</p>
+                </div>
+            </div class='row'>
+          </div class="container">
+        </div>
+      </div id="viewport">
+</body>
+</html>
