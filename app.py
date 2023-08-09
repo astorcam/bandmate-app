@@ -1,18 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
-
-# Crear una instancia de la aplicación Flask
-
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-""" # Configuración de la base de datos
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymsql://root:psswrd@localhost/bandmate'
+# Configuración de la base de datos
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:psswrd@localhost/bandmate'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-# Inicializar la base de datos
 db = SQLAlchemy(app)
- """
+# Crear todas las tablas en la base de datos
+with app.app_context():
+    db.create_all()
+
 # Rutas de la aplicación
 @app.route('/')
 def portada():
@@ -29,6 +28,10 @@ def registro():
 @app.route('/ayuda')
 def ayuda():
     return render_template('ayuda.html')
+
+@app.route('/config')
+def configuracion():
+    return render_template('configuracionBanda.html')
 
 """ @app.route('/registro', methods=['GET', 'POST'])
 def registro():
