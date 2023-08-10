@@ -3,21 +3,21 @@ document.addEventListener("DOMContentLoaded", function () {
   var formulario1 = document.getElementById("formulario1");
   var formulario2 = document.getElementById("formulario2");
 
-  var radioOptions = document.getElementsByName("inlineRadioOptions");
+  var radioOptions = document.getElementsByName("tipo_usuario");
   for (var i = 0; i < radioOptions.length; i++) {
-    radioOptions[i].addEventListener("change", function () {
-      if (this.value === "option1") {
-        formulario1.style.display = "block";
-        formulario2.style.display = "none";
-      } else if (this.value === "option2") {
-        formulario1.style.display = "none";
-        formulario2.style.display = "block";
-      }
-    });
+      radioOptions[i].addEventListener("change", function () {
+          if (this.value === "musico") {
+              formulario1.style.display = "block";
+              formulario2.style.display = "none";
+          } else if (this.value === "grupo") {
+              formulario1.style.display = "none";
+              formulario2.style.display = "block";
+          }
+      });
   }
 });
-
-
+// Path: static\js\scripts.js
+//FUNCIONES
 
 function mostrarFormulario() {
     var checkbox1 = document.getElementById('inlineRadio1');
