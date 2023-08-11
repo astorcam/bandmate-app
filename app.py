@@ -1,15 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from db import db
+from flask_bcrypt import Bcrypt
+from bleach import  clean
+from flask_login import login_user
+
+
 from models import Usuario, Musico, Grupo
 
 app = Flask(__name__)
 app.secret_key = 'CLAVE_SECRETA'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+bcrypt = Bcrypt(app)
 
 # Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:psswrd@localhost/bandmate'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db.init_app(app)
+
+
 # Crear todas las tablas en la base de datos
 with app.app_context():
     db.drop_all()
@@ -20,8 +28,19 @@ with app.app_context():
 def portada():
     return render_template('portada.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        contraseña_ingresada = request.form['contraseña']
+        #verificacione de las credenciales
+        user = Usuario.query.filter_by(email=email).first()
+        if user and bcrypt.check_password_hash(user.contraseña, contraseña_ingresada):
+            #login_user(user)
+            return redirect(url_for('ayuda'))
+        else:
+            flash('Nombre de usuario o contraseña incorrectos', 'error')
+    
     return render_template('login.html')
 
 """ @app.route('/registro')
@@ -40,13 +59,13 @@ def configuracion():
 def registro():
     if request.method == 'POST':
          # Obtener los datos del formulario de registro
-        nombre = request.form['nombre']
-        email = request.form['email']
-        contraseña = request.form['contraseña']
-        direccion = request.form['direccion']
-        genero_musical = request.form['genero_musical']
-        tipo_usuario = request.form['tipo_usuario']
-        busca_genero = request.form['busca_genero']
+        nombre = clean(request.form['nombre'])
+        email = clean(request.form['email'])
+        contraseña = clean(request.form['contraseña'])
+        direccion = clean(request.form['direccion'])
+        genero_musical = clean(request.form['genero_musical'])
+        tipo_usuario = clean(request.form['tipo_usuario'])
+        busca_genero = clean(request.form['busca_genero'])
         
            # Verifica que todos los campos del formulario estén completados
         if not nombre or not email or not contraseña or not direccion or not genero_musical or not tipo_usuario or not busca_genero:
@@ -59,6 +78,7 @@ def registro():
             flash('El correo electrónico ya está registrado. Por favor, utiliza otro correo.', 'error')
             return redirect(url_for('registro'))
         
+        hashed_password = bcrypt.generate_password_hash(contraseña).decode('utf-8')
         # Registra al usuario
         if tipo_usuario == 'musico':
             sexo = request.form['sexo']
@@ -69,7 +89,7 @@ def registro():
                 tipo=tipo_usuario,
                 nombre=nombre,
                 email=email,
-                contraseña=contraseña,
+                contraseña=hashed_password,
                 direccion=direccion,
                 genero_musical=genero_musical,
                 busca_genero=busca_genero,
