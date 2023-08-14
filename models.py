@@ -1,12 +1,15 @@
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from db import db
 from datetime import datetime
 import googlemaps
 import requests
+from math import radians, sin, cos, sqrt, atan2
+
 
 API_KEY='AIzaSyBgPGO5aDpDxfjFD5W_69CWy2b0dJXgolw'
 
 
-class Usuario(db.Model):
+class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
 
     id = db.Column('ID', db.Integer, primary_key=True, autoincrement=True)
@@ -33,7 +36,7 @@ class Usuario(db.Model):
         self.cancion_fav = None
         self.descripcion=None
         self.busca_genero = busca_genero
-        self.busca_distancia = None
+        self.busca_distancia = 50 # Por defecto 50 km
         # Llamada a la función para buscar latitud y longitud
         google_maps_api = GoogleMapsAPI()
         location= google_maps_api.buscar_latitud_longitud(direccion)
@@ -47,6 +50,46 @@ class Usuario(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+        
+    @classmethod
+    @classmethod
+    def buscar_usuarios_cercanos(cls, self):
+        usuarios_cercanos_temp = []
+        if self.tipo == 'musico':
+            grupos_cercanos = Grupo.query.filter_by(genero_musical=self.busca_genero).all()
+            usuarios_cercanos_temp.extend(grupos_cercanos)
+        elif self.tipo == 'grupo':
+            musicos_cercanos = Musico.query.filter_by(genero_musical=self.busca_genero).all()
+            usuarios_cercanos_temp.extend(musicos_cercanos)
+        usuarios_cercanos_temp = [usuario for usuario in usuarios_cercanos_temp if usuario != self]
+        usuarios_cercanos_temp = [usuario for usuario in usuarios_cercanos_temp if usuario.calcular_distancia(usuario.latitud, usuario.longitud, self.latitud, self.longitud) <= self.busca_distancia]
+        
+        if self.tipo == 'grupo':
+            usuarios_cercanos_temp = [usuario for usuario in usuarios_cercanos_temp if usuario.instrumento_principal == self.busca_instrumento]
+
+        return usuarios_cercanos_temp
+
+    @classmethod
+    def calcular_distancia(self, latitud1, longitud1, latitud2, longitud2):
+           # Radio de la Tierra en kilómetros
+        radio_tierra = 6371.0
+
+        # Convertir las coordenadas de latitud y longitud a radianes
+        latitud1 = radians(latitud1)
+        longitud1 = radians(longitud1)
+        latitud2 = radians(latitud2)
+        longitud2 = radians(longitud2)
+
+        # Diferencias de latitud y longitud
+        delta_latitud = latitud2 - latitud1
+        delta_longitud = longitud2 - longitud1
+
+        # Fórmula de Haversine para calcular la distancia entre dos puntos en una esfera
+        a = sin(delta_latitud / 2)**2 + cos(latitud1) * cos(latitud2) * sin(delta_longitud / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        distancia = radio_tierra * c
+
+        return distancia
     
 class Audio(db.Model):
     __tablename__ = 'audio'
@@ -95,14 +138,14 @@ class Grupo(Usuario):
     __tablename__ = 'grupo'
 
     id = db.Column(db.Integer, db.ForeignKey('usuario.ID'), primary_key=True)
-    busca_instrumento = db.Column(db.String(255), nullable=True)
+    busca_instrumento = db.Column(db.String(255), nullable=False)
     instrumentos = db.Column(db.String(255), nullable=True)
 
     def __init__(self, tipo, nombre, email, contraseña, direccion, genero_musical, busca_genero,
-                 busca_instrumento, instrumentos):
+                 busca_instrumento):
         super().__init__(tipo, nombre, email, contraseña, direccion, genero_musical, busca_genero)
         self.busca_instrumento = busca_instrumento
-        self.instrumentos = instrumentos
+        self.instrumentos = None
 
 # Clase Match
 class Match(db.Model):

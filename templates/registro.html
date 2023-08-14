@@ -9,7 +9,6 @@
 <body>
   <div class="container_reg"> 
     <form action="{{ url_for('registro') }}" method="POST">
-        <form action="{{ url_for('registro') }}" method="POST">
             <div class="form-row">
                   <img src="{{ url_for('static', filename='img/logo_letras_2.png') }}" alt="logo">
                 <div class="col-md-4 mb-3">
@@ -106,7 +105,6 @@
                   </div>
                   <br>
                   <div id="formulario1" style="display: none;">
-                    <form action="{{ url_for('registro') }}" method="POST">
                         <label for="validationDefault02">Sexo</label>
                         <select class="form-control" name="sexo">
                             <option selected >Elige...</option>
@@ -117,7 +115,7 @@
                         <br>
                         <div class="col-md-4 mb-3">
                           <label for="validationDefault01">Edad</label>
-                          <input type="number" name="edad" class="form-control" id="validationDefault01" placeholder="Edad" required>
+                          <input type="number" name="edad" class="form-control" id="validationDefault01" placeholder="Edad">
                         </div>
                         <label for="validationDefault02">Tu instrumento principal</label>
                         <select class="form-control" name="instrumento_principal">
@@ -144,10 +142,8 @@
                             <option value="violin">Violín</option>
                         </select>
                         <br>
-                    </form>
                   </div>
                   <div id="formulario2" style="display: none;">
-                    <form action="{{ url_for('registro') }}" method="POST">
                       <label for="validationDefault02">Qué instrumento buscas</label>
                         <select class="form-control" name="busca_instrumento">
                           <option selected>Elige...</option>
@@ -172,11 +168,9 @@
                           <option value="viola">Viola</option>
                           <option value="violin">Violín</option>
                         </select>
-                    </form>
                   </div>
                   <br>
                   <button class="btn btn-primary" style='background-color: #8d7563;' type="submit">Resgistrarse</button>
-              </div>
             </div>
           </form>
   </div>
