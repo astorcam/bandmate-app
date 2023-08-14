@@ -141,7 +141,8 @@ def inicio():
 
     if current_user.tipo=='musico':
         return render_template('home_musico.html', usuarios_cercanos=usuarios_cercanos)
-
+    elif current_user.tipo=='grupo':
+        return render_template('home_grupo.html', usuarios_cercanos=usuarios_cercanos)
 
 #funciones
 @login_manager.user_loader

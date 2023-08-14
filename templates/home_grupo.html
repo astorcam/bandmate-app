@@ -53,11 +53,11 @@
               <div class="row justify-content-center align-items-center" style="height: 100vh;">
                   {% for usuario in usuarios_cercanos %}
                       <div class="card" style="width: 18rem; background-color: #12ff46; margin-bottom: 20px;">
-                          <img class="card-img-top" src="{{ url_for('static', filename='img/ej_musico.jpg') }}" alt="Card image cap">
+                          <img class="card-img-top" src="{{ url_for('static', filename='img/ej_grupo.jpg') }}" alt="Card image cap">
                           <div class="card-body text-center d-flex flex-column">
                               <h5 class="card-title" style="font-weight: bold;">{{ usuario.nombre }}</h5>
                               <p class="card-text">Edad: {{ usuario.edad }}</p>
-                              <p class="card-text">Instrumento: {{ usuario.instrumento }}</p>
+                              <p class="card-text">Instrumento: {{ usuario.instrumento_principal }}</p>
                               <p class="card-text">Género: {{ usuario.genero }}</p>
                               <a class="black-icon" href="#">
                                   <i class="bi bi-info-circle"></i>

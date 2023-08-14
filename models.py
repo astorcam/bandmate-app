@@ -65,7 +65,8 @@ class Usuario(db.Model, UserMixin):
         usuarios_cercanos_temp = [usuario for usuario in usuarios_cercanos_temp if usuario.calcular_distancia(usuario.latitud, usuario.longitud, self.latitud, self.longitud) <= self.busca_distancia]
         
         if self.tipo == 'grupo':
-            usuarios_cercanos_temp = [usuario for usuario in usuarios_cercanos_temp if usuario.instrumento_principal == self.busca_instrumento]
+            user_grupo = Grupo.query.filter_by(id=self.id).first()
+            usuarios_cercanos_temp = [usuario for usuario in usuarios_cercanos_temp if usuario.instrumento_principal == user_grupo.busca_instrumento]
 
         return usuarios_cercanos_temp
 
