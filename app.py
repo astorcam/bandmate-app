@@ -5,7 +5,7 @@ from bleach import  clean
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 
-from models import Usuario, Musico, Grupo, Like, Dislike
+from models import Usuario, Musico, Grupo, Like, Dislike, Match
 
 app = Flask(__name__)
 app.secret_key = 'CLAVE_SECRETA'
@@ -143,6 +143,33 @@ def inicio():
         return render_template('home_musico.html', usuarios_cercanos=usuarios_cercanos)
     elif current_user.tipo=='grupo':
         return render_template('home_grupo.html', usuarios_cercanos=usuarios_cercanos)
+    
+@app.route('/dar_like/<int:usuario_id>', methods=['POST'])
+@login_required
+def dar_like(usuario_id):
+    usuario = Usuario.query.get(usuario_id)
+    if usuario:
+        like = Like(emisor=current_user, receptor=usuario)
+        like.save()
+        match = None
+        if Like.query.filter_by(emisor_id=usuario_id, receptor_id=current_user.id).first():
+            if current_user.tipo == 'musico':
+                match = Match(musico_id=current_user.id, grupo_id=usuario_id)
+            else:
+                match = Match(musico_id=usuario_id, grupo_id=current_user.id)
+            match.save()
+    else:
+        return 404
+    
+@app.route('/dar_dislike/<int:usuario_id>', methods=['POST'])
+@login_required
+def dar_dislike(usuario_id):
+    usuario = Usuario.query.get(usuario_id)
+    if usuario:
+        dislike = Dislike(emisor=current_user, receptor=usuario)
+        dislike.save()
+    else:
+        return 404
 
 #funciones
 @login_manager.user_loader

@@ -19,6 +19,71 @@ document.addEventListener("DOMContentLoaded", function () {
 // Path: static\js\scripts.js
 //FUNCIONES
 
+document.addEventListener("DOMContentLoaded", function () {
+  let currentIndex = 1; // Índice del usuario actual
+
+  function showUser(index) {
+      const usuarios = document.querySelectorAll(".usuario-card");
+      usuarios.forEach((usuario) => {
+          usuario.style.display = "none";
+      });
+
+      const usuarioActual = document.querySelector(`#usuario-${index}`);
+      if (usuarioActual) {
+          usuarioActual.style.display = "block";
+      }
+  }
+
+  showUser(currentIndex);
+
+  const btnLikes = document.querySelectorAll(".btn-like");
+  const btnDislikes = document.querySelectorAll(".btn-dislike");
+
+  btnLikes.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const usuarioIdActual = btn.getAttribute("data-usuario-id");
+        fetch(`/dar_like/${usuarioIdActual}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+          .then(response => response.json())
+          .then(data => {
+              console.log("Like registrado:", data);
+          })
+          .catch(error => {
+              console.error("Error al registrar el like:", error);
+          });
+          currentIndex++;
+          showUser(currentIndex);
+      });
+  });
+
+  btnDislikes.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const usuarioIdActual = btn.getAttribute("data-usuario-id");
+        fetch(`/dar_dislike/${usuarioIdActual}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+          .then(response => response.json())
+          .then(data => {
+              console.log("Dislike registrado:", data);
+          })
+          .catch(error => {
+              console.error("Error al registrar el dislike:", error);
+          }); 
+          currentIndex++;
+          showUser(currentIndex);
+      });
+  });
+});
+
+
+
 function mostrarFormulario() {
     var checkbox1 = document.getElementById('inlineRadio1');
     var checkbox2 = document.getElementById('inlineRadio2');

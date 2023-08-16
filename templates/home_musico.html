@@ -51,8 +51,8 @@
         <div id="content">
           <div class="container">
               <div class="row justify-content-center align-items-center" style="height: 100vh;">
-                  {% for usuario in usuarios_cercanos %}
-                      <div class="card" style="width: 18rem; background-color: #12ff46; margin-bottom: 20px;">
+                    {% for usuario in usuarios_cercanos %}
+                    <div class="card usuario-card" id="usuario-{{ loop.index }}" style="width: 18rem; background-color: #12ff46; margin-bottom: 20px;">
                           <img class="card-img-top" src="{{ url_for('static', filename='img/ej_grupo.jpg') }}" alt="Card image cap">
                           <div class="card-body text-center d-flex flex-column">
                               <h5 class="card-title" style="font-weight: bold;">{{ usuario.nombre }}</h5>
@@ -64,13 +64,13 @@
                           </div>
                           <div class="card-body text-center">
                               <form action="" method="POST">
-                                  <button type="submit" class="btn btn-success">
-                                      <i class="bi bi-hand-thumbs-up-fill"></i>
-                                  </button>
-                                  <button type="submit" class="btn btn-danger">
-                                      <i class="bi bi-hand-thumbs-down-fill"></i>
-                                  </button>
-                              </form>
+                                <button type="button" class="btn btn-success btn-like" data-usuario-id="{{ usuario.id }}">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-dislike" data-usuario-id="{{ usuario.id }}">
+                                    <i class="bi bi-hand-thumbs-down-fill"></i>
+                                </button>
+                            </form>
                           </div>
                       </div>
                   {% endfor %}
@@ -78,5 +78,6 @@
           </div>
       </div>
       </div id="viewport">
+      <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>

@@ -155,8 +155,10 @@ class Match(db.Model):
     match_id = db.Column(db.Integer, primary_key=True)
     musico_id = db.Column(db.Integer, db.ForeignKey('musico.id'), nullable=False)
     grupo_id = db.Column(db.Integer, db.ForeignKey('grupo.id'), nullable=False)
-
-
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 # Clase Mensaje
 class Mensaje(db.Model):
@@ -175,12 +177,26 @@ class Like(db.Model):
     emisor_id = db.Column(db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
     receptor_id = db.Column(db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
 
+    emisor = db.relationship('Usuario', foreign_keys=[emisor_id])
+    receptor = db.relationship('Usuario', foreign_keys=[receptor_id])
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
 class Dislike(db.Model):
     __tablename__ = 'dislike_table'
 
     dislike_id = db.Column(db.Integer, primary_key=True)
     emisor_id = db.Column(db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
     receptor_id = db.Column(db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
+    
+    emisor = db.relationship('Usuario', foreign_keys=[emisor_id])
+    receptor = db.relationship('Usuario', foreign_keys=[receptor_id])
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 class GoogleMapsAPI:    
     def __init__(self, API_KEY='AIzaSyAO-2U9g7LQ0fHvkI4IfDBL_adMQflkcV4'):
