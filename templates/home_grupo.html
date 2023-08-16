@@ -16,7 +16,7 @@
           </header>
           <ul class="nav">
             <li>
-              <a href="#">
+              <a href="{{url_for('inicio')}}">
                 <i class="bi bi-house-door-fill"></i>  Inicio
               </a>
             </li>
@@ -31,12 +31,12 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="{{url_for('configuracion')}}">
                 <i class="bi bi-gear-fill"></i> Configuración
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="{{url_for('ayuda')}}">
                 <i class="bi bi-info-circle-fill"></i> Ayuda
               </a>
             </li>
@@ -50,6 +50,17 @@
         <!-- Content -->
         <div id="content">
           <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <div class="alert alert-success">
+                    <ul>
+                      {% for message in messages %}
+                        <li>{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              {% endwith %}
               <div class="row justify-content-center align-items-center" style="height: 100vh;">
                   {% for usuario in usuarios_cercanos %}
                     <div class="card usuario-card" id="usuario-{{ loop.index }}" style="width: 18rem; background-color: #12ff46; margin-bottom: 20px;">

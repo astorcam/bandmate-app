@@ -61,14 +61,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   btnDislikes.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const usuarioIdActual = btn.getAttribute("data-usuario-id");
-        fetch(`/dar_dislike/${usuarioIdActual}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
+        btn.addEventListener("click", () => {
+            const usuarioIdActual = btn.getAttribute("data-usuario-id");
+
+            fetch(`/dar_dislike/${usuarioIdActual}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
           .then(response => response.json())
           .then(data => {
               console.log("Dislike registrado:", data);

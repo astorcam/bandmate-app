@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash,jsonify
 from db import db
 from flask_bcrypt import Bcrypt
 from bleach import  clean
@@ -29,6 +29,10 @@ with app.app_context():
 @app.route('/')
 def portada():
     return render_template('portada.html')
+
+@app.route('/perfil_musico')
+def perfil_musico():
+    return render_template('perfil_musico.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -121,11 +125,6 @@ def registro():
     return render_template('registro.html')
 
 
-""" @app.route('/inicio')
-@login_required
-def inicio():
-    return render_template('home.html') """
-
 @app.route('/inicio')
 @login_required
 def inicio():
@@ -157,10 +156,10 @@ def dar_like(usuario_id):
                 match = Match(musico_id=current_user.id, grupo_id=usuario_id)
             else:
                 match = Match(musico_id=usuario_id, grupo_id=current_user.id)
-            match.save()
-    else:
-        return 404
-    
+            match.save()            
+    return jsonify({'message': 'Operación completada'})
+
+
 @app.route('/dar_dislike/<int:usuario_id>', methods=['POST'])
 @login_required
 def dar_dislike(usuario_id):
