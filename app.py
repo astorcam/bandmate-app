@@ -34,6 +34,10 @@ def portada():
 def perfil_musico():
     return render_template('perfil_musico.html')
 
+@app.route('/perfil_grupo')
+def perfil_grupo():
+    return render_template('perfil_grupo.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
