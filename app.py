@@ -5,7 +5,7 @@ from bleach import  clean
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 
-from models import Usuario, Musico, Grupo, Like, Dislike, Match
+from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI
 
 app = Flask(__name__)
 app.secret_key = 'CLAVE_SECRETA'
@@ -66,8 +66,89 @@ def ayuda():
 
 @app.route('/config')
 def configuracion():
-    return render_template('configuracionBanda.html')
+    usuario_actual = current_user
+    if usuario_actual.tipo == 'musico':
+        musico_actual = Musico.query.get(usuario_actual.id)
+        return render_template('configuracionMusico.html', usuario=usuario_actual, musico=musico_actual)
+    else:
+        grupo_actual = Grupo.query.get(usuario_actual.id)
+        return render_template('configuracionGrupo.html', usuario=usuario_actual, grupo=grupo_actual)     
+    
+@app.route('/actualizar_datos', methods=['GET', 'POST'])  
+def actualizar_datos():
+    usuario_actual = current_user
+    if request.method == 'POST':
+            nombre = clean(request.form['nombre'])
+            email = clean(request.form['email'])
+            direccion = clean(request.form['direccion'])
+            if not nombre or not email or not direccion:
+                flash('Por favor, completa todos los campos del formulario.', 'error')
+                return redirect(url_for('configuracion')) 
+            usuario_existente = Usuario.query.filter_by(email=email).first()
+            if usuario_existente and usuario_existente.id != usuario_actual.id:
+                flash('El correo electrónico ya está registrado. Por favor, utiliza otro correo.', 'error')
+                return redirect(url_for('configuracion'))    
+            google_maps_api = GoogleMapsAPI()
+            location= google_maps_api.buscar_latitud_longitud(direccion)
+            usuario_actual.latitud=location['lat']
+            usuario_actual.longitud=location['lng']      
+            usuario_actual.nombre = nombre
+            usuario_actual.email = email
+            usuario_actual.direccion = direccion
+            usuario_actual.save()
+            if usuario_actual.tipo == 'musico':
+                musico_actual = Musico.query.get(usuario_actual.id)   
+                instrumento_principal = clean(request.form['instrumento_principal'])
+                if instrumento_principal!="Elige...":
+                    musico_actual.instrumento_principal = instrumento_principal
+                    musico_actual.save()
+            flash('Datos actualizados', 'success')
+            return redirect(url_for('configuracion'))
 
+        
+@app.route('/actualizar_busqueda', methods=['GET', 'POST']) 
+def actualizar_busqueda():
+    usuario_actual=current_user
+    if request.method == 'POST':
+        busca_distancia = clean(request.form['busca_distancia'])
+        busca_genero = clean(request.form['busca_genero'])
+        if not busca_distancia or not busca_genero:
+                flash('Por favor, completa todos los campos del formulario.', 'error')
+                return redirect(url_for('configuracion')) 
+        usuario_actual.busca_distancia = busca_distancia
+        if busca_genero!="Elige...":
+                usuario_actual.busca_genero = busca_genero
+        usuario_actual.save()
+        if usuario_actual.tipo == 'grupo':
+            grupo_actual = Grupo.query.get(usuario_actual.id)
+            busca_instrumento = clean(request.form['busca_instrumento'])
+            if busca_instrumento!="Elige...":
+                grupo_actual.busca_instrumento = busca_instrumento
+                grupo_actual.save()
+        flash('Datos actualizados', 'success')
+        return redirect(url_for('configuracion'))
+    
+@app.route('/actualizar_contraseña', methods=['GET', 'POST'])
+def actualizar_contraseña():
+    usuario_actual = current_user
+    if request.method == 'POST':
+        contraseña_actual = request.form['contraseña_actual']
+        contraseña_nueva = request.form['contraseña_nueva']
+        contraseña_nueva2 = request.form['contraseña_nueva2']
+        if not contraseña_actual or not contraseña_nueva or not contraseña_nueva2:
+            flash('Por favor, completa todos los campos del formulario.', 'error')
+            return redirect(url_for('configuracion'))
+        if not bcrypt.check_password_hash(usuario_actual.contraseña, contraseña_actual):
+            flash('La contraseña actual no es correcta.', 'error')
+            return redirect(url_for('configuracion'))
+        if contraseña_nueva != contraseña_nueva2:
+            flash('Las contraseñas nuevas no coinciden.', 'error')
+            return redirect(url_for('configuracion'))
+        usuario_actual.contraseña = bcrypt.generate_password_hash(contraseña_nueva).decode('utf-8')
+        usuario_actual.save()
+        flash('Contraseña actualizada', 'success')
+        return redirect(url_for('configuracion'))
+    
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':

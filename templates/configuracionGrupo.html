@@ -53,7 +53,7 @@
           <div class="container">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
-              <div class="alert alert-success">
+              <div class="alert">
                 <ul>
                   {% for message in messages %}
                     <li>{{ message }}</li>
@@ -66,7 +66,7 @@
                 <div class='col-md-6'>
                     <h1 class='h_portada'>Configuración</h1>
                     <form method="POST" action="{{ url_for('actualizar_datos') }}">
-                        <div class="form-row">
+                      <div class="form-row">
                             <p class='p_ayuda'>
                                 DATOS DE CUENTA
                             </p>
@@ -82,32 +82,6 @@
                               <label class='p_ayuda_t' for="validationDefault04">Dirección</label>
                               <input type="text" class="form-control" id="validationDefault04" name="direccion" placeholder=" " value="{{ usuario.direccion }}" required>
                           </div>
-                            <div class="col-md-6 mb-3">
-                                <label class='p_ayuda_t' for="validationDefault02">Instrumento principal</label>
-                                <select class="form-control" name="instrumento_principal">
-                                  <option selected>Elige...</option>
-                                  <option value="acordeon">Acordeón</option>
-                                  <option value="arpa">Arpa</option>
-                                  <option value="bajo">Bajo</option>
-                                  <option value="bateria">Batería</option>
-                                  <option value="cantante">Cantante</option>
-                                  <option value="cello">Cello</option>
-                                  <option value="clarinete">Clarinete</option>
-                                  <option value="contrabajo">Contrabajo</option>
-                                  <option value="flauta">Flauta</option>
-                                  <option value="guitarra">Guitarra</option>
-                                  <option value="organo">Órgano</option>
-                                  <option value="percusion">Percusión</option>
-                                  <option value="piano">Piano</option>
-                                  <option value="saxofon">Saxofón</option>
-                                  <option value="teclado">Teclado</option>
-                                  <option value="trombon">Trombón</option>
-                                  <option value="trompa">Trompa</option>
-                                  <option value="trompeta">Trompeta</option>
-                                  <option value="viola">Viola</option>
-                                  <option value="violin">Violín</option>
-                              </select>
-                            </div>
                         </div class="form-row">
                         <button class="btn btn-primary" style='background-color: #8d7563;' type="submit">Actualizar datos</button>
                     </form>
@@ -116,11 +90,11 @@
                         CONFIGURACIÓN DE BUSQUEDA
                     </p>
                     <form method="POST" action="{{ url_for('actualizar_busqueda') }}">
-                    <div class="form-row">
+                      <div class="form-row">
                         <div class="col-md-6 mb-3">
-                            <label class='p_ayuda_t' for="validationDefault01">Distancia máxima de búsqueda</label>
-                            <input type="number" class="form-control" name='busca_distancia' id="validationDefault01" placeholder=" " value="{{ usuario.busca_distancia }}" required>
-                        </div>
+                          <label class='p_ayuda_t' for="validationDefault01">Distancia máxima de búsqueda</label>
+                          <input type="number" class="form-control" name='busca_distancia' id="validationDefault01" placeholder=" " value="{{ usuario.busca_distancia }}" required>
+                      </div>
                         <div class="col-md-6 mb-3">
                             <label class='p_ayuda_t' for="validationDefault02">Qué género musical buscas</label>
                             <select class="form-control" name="busca_genero">
@@ -156,6 +130,32 @@
                               <option value="vallenato">Vallenato</option>
                             </select>
                         </div>
+                        <div class="col-md-6 mb-3">
+                          <label class='p_ayuda_t' for="validationDefault02">Qué instrumento buscas</label>
+                          <select class="form-control" name="busca_instrumento">
+                            <option selected>Elige...</option>
+                            <option value="acordeon">Acordeón</option>
+                            <option value="arpa">Arpa</option>
+                            <option value="bajo">Bajo</option>
+                            <option value="bateria">Batería</option>
+                            <option value="cantante">Cantante</option>
+                            <option value="cello">Cello</option>
+                            <option value="clarinete">Clarinete</option>
+                            <option value="contrabajo">Contrabajo</option>
+                            <option value="flauta">Flauta</option>
+                            <option value="guitarra">Guitarra</option>
+                            <option value="organo">Órgano</option>
+                            <option value="percusion">Percusión</option>
+                            <option value="piano">Piano</option>
+                            <option value="saxofon">Saxofón</option>
+                            <option value="teclado">Teclado</option>
+                            <option value="trombon">Trombón</option>
+                            <option value="trompa">Trompa</option>
+                            <option value="trompeta">Trompeta</option>
+                            <option value="viola">Viola</option>
+                            <option value="violin">Violín</option>
+                        </select>
+                      </div>
                     </div>
                     <button class="btn btn-primary" style='background-color: #8d7563;' type="submit">Guardar configuración</button>
                     </form>
@@ -183,8 +183,8 @@
                     <br>
                 </div class='col-md-6'>
                 <div class='col-md-6'>
-                    <img src="{{ url_for('static', filename='img/img_config1.png') }}" alt="portada">
-                    <img src="{{ url_for('static', filename='img/img_config2.png') }}" alt="portada">
+                  <img src="{{ url_for('static', filename='img/img_config1.png') }}" alt="portada">
+                  <img src="{{ url_for('static', filename='img/img_config2.png') }}" alt="portada">
                 </div class='col-md-6'>
             </div class='row'>
           </div class="container">
