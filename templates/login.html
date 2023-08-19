@@ -8,6 +8,17 @@
 </head>
 <body style='background-color: #12ff46'>
     <div class="container">
+      {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <div class="alert alert-success">
+                    <ul>
+                      {% for message in messages %}
+                        <li>{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              {% endwith %}
       <div class='row'>
         <div class='col'>
           <img src="{{ url_for('static', filename='img/img_login.png') }}" alt="logo">

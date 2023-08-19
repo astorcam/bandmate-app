@@ -21,7 +21,7 @@
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="{{url_for('perfil_personal')}}">
                   <i class="bi bi-person-fill"></i> Perfil
                 </a>
               </li>
@@ -69,16 +69,16 @@
                     <div class="card" style="background-color: #b3ac8f;">
                       <div class='row align-items-center my-2 mx-2'>
                         <div class='col'>
-                          <h1 class="card-title" style="font-weight: bold;">Jon</h1>
-                            <p class="card-title" style="font-weight: bold;">Bajo</p>
+                          <h1 class="card-title" style="font-weight: bold;">{{usuario.nombre|capitalize}}</h1>
+                            <p class="card-title" style="font-weight: bold;">{{musico.instrumento_principal|capitalize}}</p>
                         </div>
                       </div>
                       <div class='row align-items-center my-2 mx-2'>
                         <div class='col'>
-                          <i class="bi bi-geo-alt-fill">Bilbao</i>
+                          <i class="bi bi-geo-alt-fill">{{ciudad|capitalize}}</i>
                         </div>
                         <div class='col'>                        
-                          <i class="bi bi-person-fill">Hombre</i>
+                          <i class="bi bi-person-fill">{{musico.sexo|capitalize}}</i>
                         </div>
                       </div>
                       <div class="card-body">
@@ -87,7 +87,7 @@
                             <h5 class="card-title" style="font-weight: bold;">Edad</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">26</p>
+                            <p class="card-text">{{musico.edad}}</p>
                           </div>
                         </div>
                         <div class='row my-2'>
@@ -95,7 +95,7 @@
                             <h5 class="card-title" style="font-weight: bold;">Género musical</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">Rock</p>
+                            <p class="card-text">{{usuario.genero_musical|capitalize}}</p>
                           </div>
                         </div>
                         <div class='row my-2'>
@@ -103,7 +103,7 @@
                             <h5 class="card-title" style="font-weight: bold;">Sobre mí</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">Hola, me llamo Jon, toco el bajo, me gusta el rock y busco un grupo para darle caña.</p>
+                            <p class="card-text">{{usuario.descripcion}}</p>
                           </div>
                         </div>
                         <div class='row my-2'>

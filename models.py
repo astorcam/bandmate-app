@@ -50,8 +50,9 @@ class Usuario(db.Model, UserMixin):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+    
         
-    @classmethod
+
     @classmethod
     def buscar_usuarios_cercanos(cls, self):
         usuarios_cercanos_temp = []
@@ -212,8 +213,21 @@ class GoogleMapsAPI:
         url = 'https://maps.googleapis.com/maps/api/geocode/json?'
         response = requests.get(url, params=params).json()
         response.keys()
-        print('ha llegado aqui 1')
         if response['status'] == 'OK' and 'results' in response: 
             location = response['results'][0]['geometry']['location']
             return location
+        return None
+    
+    def buscar_ciudad(self,direccion):
+        #llamada a la API de Google Maps
+        API_KEY='AIzaSyAO-2U9g7LQ0fHvkI4IfDBL_adMQflkcV4'
+        params = {
+        'key': API_KEY,
+        'address': direccion}
+        url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+        response = requests.get(url, params=params).json()
+        response.keys()
+        if response['status'] == 'OK' and 'results' in response: 
+            ciudad = response['results'][0]['address_components'][2]['long_name']
+            return ciudad
         return None

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Enlace al archivo CSS de Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Enlace a tu archivo styles.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div id="viewport">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <header>
+              <img class='img' src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+            </header>
+            <ul class="nav">
+                <li>
+                    <a href="{{url_for('inicio')}}">
+                      <i class="bi bi-house-door-fill"></i>  Inicio
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('perfil_personal')}}">
+                      <i class="bi bi-person-fill"></i> Perfil
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="bi bi-chat-dots-fill"></i> Chats
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('configuracion')}}">
+                      <i class="bi bi-gear-fill"></i> Configuración
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('ayuda')}}">
+                      <i class="bi bi-info-circle-fill"></i> Ayuda
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('logout')}}">
+                      <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+                    </a>
+                  </li>
+            </ul>
+          </div>
+        <!-- Content -->
+        <div id="content">
+          <div class="container">     
+              <div class="row justify-content-center align-items-center" style="height: 100vh;">
+              
+                    
+                      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                          <div class="carousel-item carousel-img active">
+                            <img class="d-block w-100" src="{{ url_for('static', filename='img/ej_musico.jpg') }}" alt="First slide">
+                          </div>
+                          <div class="carousel-item carousel-img">
+                            <img class="d-block w-100" src="{{ url_for('static', filename='img/ej_grupo.jpg') }}" alt="Second slide">
+                          </div>
+                          <div class="carousel-item carousel-img">
+                            <img class="d-block w-100" src="{{ url_for('static', filename='img/img_portada.png') }}" alt="Third slide">
+                          </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </div>
+                    
+                    <div class="card" style="background-color: #b3ac8f;">
+                      <div class='row align-items-center my-2 mx-2'>
+                        <div class='col'>
+                          <h1 class="card-title" style="font-weight: bold;">{{usuario.nombre|capitalize}}</h1>
+                            <p class="card-title" style="font-weight: bold;">{{musico.instrumento_principal|capitalize}}</p>
+                        </div>
+                      </div>
+                      <div class='row align-items-center my-2 mx-2'>
+                        <div class='col'>
+                          <i class="bi bi-geo-alt-fill">{{ciudad|capitalize}}</i>
+                        </div>
+                        <div class='col'>                        
+                          <i class="bi bi-person-fill">{{musico.sexo|capitalize}}</i>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <div class='row my-2'>
+                          <div class='col'>
+                            <h5 class="card-title" style="font-weight: bold;">Edad</h5>
+                          </div>
+                          <div class='col'>                        
+                            <p class="card-text">{{musico.edad}}</p>
+                          </div>
+                        </div>
+                        <div class='row my-2'>
+                          <div class='col'>
+                            <h5 class="card-title" style="font-weight: bold;">Género musical</h5>
+                          </div>
+                          <div class='col'>                        
+                            <p class="card-text">{{usuario.genero_musical|capitalize}}</p>
+                          </div>
+                        </div>
+                        <div class='row my-2'>
+                          <div class='col'>
+                            <h5 class="card-title" style="font-weight: bold;">Sobre mí</h5>
+                          </div>
+                          <div class='col'>                        
+                            <p class="card-text">{{usuario.descripcion}}</p>
+                          </div>
+                        </div>
+                        <div class='row my-2'>
+                          <div class='col'>
+                            <h5 class="card-title" style="font-weight: bold;">Canción favorita</h5>
+                          </div>
+                          <div class='col'>                        
+                            <i class="bi bi-file-music-fill"></i>
+                          </div>
+                        </div>
+                        <div class="row mx-1 mt-5">
+                          <button onclick="window.location.href='{{ url_for('editar_perfil') }}'" class="btn btn-dark" style='margin-top: 10px; width: 20%;' >Editar perfil</button>
+                      </div>
+                      </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+      </div id="viewport">
+      <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -50,6 +50,11 @@ body{
   color: black;
 }
 
+.carousel-img{
+  width: 50%;
+  height: 50%;
+  background-position: center;
+}
 
 /* Toggle Styles */
 

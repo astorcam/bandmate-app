@@ -21,7 +21,7 @@
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="{{url_for('perfil_personal')}}">
                   <i class="bi bi-person-fill"></i> Perfil
                 </a>
               </li>
@@ -69,12 +69,12 @@
                     <div class="card" style="background-color: #b3ac8f;">
                       <div class='row align-items-center my-2 mx-2'>
                         <div class='col'>
-                          <h1 class="card-title" style="font-weight: bold;">Cats</h1>
+                          <h1 class="card-title" style="font-weight: bold;">{{usuario.nombre|capitalize}}</h1>
                         </div>
                       </div>
                       <div class='row align-items-center my-2 mx-2'>
                         <div class='col'>
-                          <i class="bi bi-geo-alt-fill">Bilbao</i>
+                          <i class="bi bi-geo-alt-fill">{{ciudad}}</i>
                         </div>
                       </div>
                       <div class="card-body">
@@ -83,7 +83,7 @@
                             <h5 class="card-title" style="font-weight: bold;">Busca</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">Bajo</p>
+                            <p class="card-text">{{grupo.busca_instrumento|capitalize}}</p>
                           </div>
                         </div>
                         <div class='row my-2'>
@@ -99,7 +99,7 @@
                             <h5 class="card-title" style="font-weight: bold;">Género musical</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">Punk</p>
+                            <p class="card-text">{{usuario.genero_musical|capitalize}}</p>
                           </div>
                         </div>
                         <div class='row my-2'>
@@ -107,7 +107,7 @@
                             <h5 class="card-title" style="font-weight: bold;">Sobre mí</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">Que pasa peña, buscamos un bajista con ganas de darle duro, estamos dando giras y ou yeah.</p>
+                            <p class="card-text">{{usuario.descripcion}}</p>
                           </div>
                         </div>
                         <div class='row my-2'>

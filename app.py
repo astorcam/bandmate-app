@@ -30,13 +30,39 @@ with app.app_context():
 def portada():
     return render_template('portada.html')
 
-@app.route('/perfil_musico')
-def perfil_musico():
-    return render_template('perfil_musico.html')
+@app.route('/perfil_detallado/<int:usuario_id>')
+@login_required
+def perfil_detallado(usuario_id):
+    usuario = Usuario.query.get(usuario_id)
+    googlemaps=GoogleMapsAPI()
+    ciudad = googlemaps.buscar_ciudad(usuario.direccion)
+    if usuario.tipo == 'musico':
+        musico = Musico.query.get(usuario_id)
+        return render_template('perfil_musico.html', usuario=usuario, musico=musico, ciudad=ciudad)
+    else:
+        grupo = Grupo.query.get(usuario_id)
+        return render_template('perfil_grupo.html', usuario=usuario, grupo=grupo, ciudad=ciudad)
 
-@app.route('/perfil_grupo')
-def perfil_grupo():
-    return render_template('perfil_grupo.html')
+@app.route('/perfil_personal')
+def perfil_personal():
+    usuario_actual = current_user
+    googlemaps=GoogleMapsAPI()
+    ciudad = googlemaps.buscar_ciudad(usuario_actual.direccion)
+    if usuario_actual.tipo == 'musico':
+        musico_actual = Musico.query.get(usuario_actual.id)
+        return render_template('perfil_personal_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad)
+    
+@app.route('/editar_perfil')
+def editar_perfil():
+    usuario_actual = current_user
+    googlemaps=GoogleMapsAPI()
+    ciudad = googlemaps.buscar_ciudad(usuario_actual.direccion)
+    if usuario_actual.tipo == 'musico':
+        musico_actual = Musico.query.get(usuario_actual.id)
+        return render_template('editar_perfil_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad)
+    else:
+        grupo_actual = Grupo.query.get(usuario_actual.id)
+        return render_template('editar_perfil_grupo.html', usuario=usuario_actual, grupo=grupo_actual,  ciudad=ciudad)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -74,7 +100,8 @@ def configuracion():
         grupo_actual = Grupo.query.get(usuario_actual.id)
         return render_template('configuracionGrupo.html', usuario=usuario_actual, grupo=grupo_actual)     
     
-@app.route('/actualizar_datos', methods=['GET', 'POST'])  
+@app.route('/actualizar_datos', methods=['GET', 'POST'])
+@login_required
 def actualizar_datos():
     usuario_actual = current_user
     if request.method == 'POST':
@@ -107,6 +134,7 @@ def actualizar_datos():
 
         
 @app.route('/actualizar_busqueda', methods=['GET', 'POST']) 
+@login_required
 def actualizar_busqueda():
     usuario_actual=current_user
     if request.method == 'POST':
@@ -129,6 +157,7 @@ def actualizar_busqueda():
         return redirect(url_for('configuracion'))
     
 @app.route('/actualizar_contraseña', methods=['GET', 'POST'])
+@login_required
 def actualizar_contraseña():
     usuario_actual = current_user
     if request.method == 'POST':
