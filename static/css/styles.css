@@ -56,6 +56,30 @@ body{
   background-position: center;
 }
 
+.transparent-card {
+  background-color: rgba(255, 255, 255, 0); /* Ajusta el último valor (0.5) para la opacidad deseada */
+  border: none; /* Opcional: eliminar el borde si no lo necesitas */
+}
+
+.edit-files {
+  background-color: rgba(255, 255, 255, 0,5); /* Ajusta el último valor (0.5) para la opacidad deseada */
+  border: none; /* Opcional: eliminar el borde si no lo necesitas */
+}
+
+/* music player */
+
+audio {
+  filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
+  width: 500px;
+  height: 100px;
+  padding-bottom: 20px;
+  margin-left: 70px;
+  margin-right: 50px;
+}
+
+
+
+
 /* Toggle Styles */
 
 #viewport {

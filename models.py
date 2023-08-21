@@ -101,6 +101,18 @@ class Audio(db.Model):
     audio_url = db.Column('AUDIO_URL', db.String(255))
 
     usuario = db.relationship('Usuario', backref=db.backref('audios', lazy=True))
+    
+    def __init__(self, user_id, audio_url):
+        self.user_id = user_id
+        self.audio_url = audio_url
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class Foto(db.Model):
     __tablename__ = 'foto'
@@ -110,6 +122,18 @@ class Foto(db.Model):
     foto_url = db.Column('FOTO_URL', db.String(255))
 
     usuario = db.relationship('Usuario', backref=db.backref('fotos', lazy=True))
+    
+    def __init__(self, user_id, foto_url):
+        self.user_id = user_id
+        self.foto_url = foto_url
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class Video(db.Model):
     __tablename__ = 'video'
@@ -119,6 +143,18 @@ class Video(db.Model):
     video_url = db.Column('VIDEO_URL', db.String(255))
 
     usuario = db.relationship('Usuario', backref=db.backref('videos', lazy=True))
+    
+    def __init__(self, user_id, video_url):
+        self.user_id = user_id
+        self.video_url = video_url
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
     
 class Musico(Usuario):

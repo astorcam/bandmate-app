@@ -3,9 +3,10 @@ from db import db
 from flask_bcrypt import Bcrypt
 from bleach import  clean
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+import os
 
 
-from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI
+from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI, Foto, Video, Audio
 
 app = Flask(__name__)
 app.secret_key = 'CLAVE_SECRETA'
@@ -48,21 +49,108 @@ def perfil_personal():
     usuario_actual = current_user
     googlemaps=GoogleMapsAPI()
     ciudad = googlemaps.buscar_ciudad(usuario_actual.direccion)
+    fotos=Foto.query.filter_by(user_id=usuario_actual.id).all()
+    videos=Video.query.filter_by(user_id=usuario_actual.id).all()
+    audios=Audio.query.filter_by(user_id=usuario_actual.id).all()
+    multimedia_list = []
+    for foto in fotos:
+        filename = os.path.basename(foto.foto_url)
+        
+        multimedia_list.append({"tipo": "foto", "url": filename})
+    for video in videos:
+        filename = os.path.basename(video.video_url)
+        multimedia_list.append({"tipo": "video", "url": filename})
+    for audio in audios:
+        filename = os.path.basename(audio.audio_url)
+        multimedia_list.append({"tipo": "audio", "url": filename})
     if usuario_actual.tipo == 'musico':
         musico_actual = Musico.query.get(usuario_actual.id)
-        return render_template('perfil_personal_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad)
+        return render_template('perfil_personal_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad, multimedia_list=multimedia_list)
     
 @app.route('/editar_perfil')
 def editar_perfil():
     usuario_actual = current_user
     googlemaps=GoogleMapsAPI()
     ciudad = googlemaps.buscar_ciudad(usuario_actual.direccion)
+    fotos=Foto.query.filter_by(user_id=usuario_actual.id).all()
+    videos=Video.query.filter_by(user_id=usuario_actual.id).all()
+    audios=Audio.query.filter_by(user_id=usuario_actual.id).all()
+    multimedia_list = []
+    for foto in fotos:
+        filename = os.path.basename(foto.foto_url)
+        
+        multimedia_list.append({"tipo": "foto", "url": filename})
+    for video in videos:
+        filename = os.path.basename(video.video_url)
+        multimedia_list.append({"tipo": "video", "url": filename})
+    for audio in audios:
+        filename = os.path.basename(audio.audio_url)
+        multimedia_list.append({"tipo": "audio", "url": filename})
     if usuario_actual.tipo == 'musico':
         musico_actual = Musico.query.get(usuario_actual.id)
-        return render_template('editar_perfil_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad)
+        return render_template('editar_perfil_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad, multimedia_list=multimedia_list)
     else:
         grupo_actual = Grupo.query.get(usuario_actual.id)
-        return render_template('editar_perfil_grupo.html', usuario=usuario_actual, grupo=grupo_actual,  ciudad=ciudad)
+        return render_template('editar_perfil_grupo.html', usuario=usuario_actual, grupo=grupo_actual,  ciudad=ciudad,  multimedia_list=multimedia_list)
+    
+@app.route('/guardar_cambios_perfil', methods=['GET', 'POST'])
+def guardar_cambios_perfil():
+    usuario_actual = current_user
+    if request.method == 'POST':
+        genero_musical = clean(request.form['genero_musical'])
+        descripcion = clean(request.form['descripcion'])
+        if genero_musical != "Elige...":
+            usuario_actual.genero_musical = genero_musical
+        usuario_actual.descripcion = descripcion
+        usuario_actual.save()
+        
+        if 'foto' in request.files:
+            foto = request.files['foto']
+            if foto.filename:
+                foto.save(os.path.join('static/uploads', foto.filename))
+                foto_url = os.path.join('static/uploads', foto.filename)
+                nueva_foto = Foto(user_id=usuario_actual.id, foto_url=foto_url)
+                nueva_foto.save()
+
+        if 'audio' in request.files:
+            audio = request.files['audio']
+            if audio.filename:
+                audio.save(os.path.join('static/uploads', audio.filename))
+                audio_url = os.path.join('static/uploads', audio.filename)
+                nuevo_audio = Audio(user_id=usuario_actual.id, audio_url=audio_url)
+                nuevo_audio.save()
+
+        if 'video' in request.files:
+            video = request.files['video']
+            if video.filename:
+                video.save(os.path.join('static/uploads', video.filename))
+                video_url = os.path.join('static/uploads', video.filename)
+                nuevo_video = Video(user_id=usuario_actual.id, video_url=video_url)
+                nuevo_video.save()
+
+        usuario_actual.save()
+        return redirect(url_for('perfil_personal'))
+    
+""" @app.route('/eliminar_foto/<int:multimedia_id>', methods=['POST'])
+def eliminar_foto(multimedia_id):
+    foto = Foto.query.get(multimedia_id)
+    if foto:
+        foto.delete()
+    return redirect(url_for('editar_perfil'))
+
+@app.route('/eliminar_audio/<int:multimedia_id>', methods=['POST'])
+def eliminar_audio(multimedia_id):
+    audio = Audio.query.get(multimedia_id)
+    if audio:
+        audio.delete()
+    return redirect(url_for('editar_perfil'))
+
+@app.route('/eliminar_video/<int:multimedia_id>', methods=['POST'])
+def eliminar_video(multimedia_id):
+    video = Video.query.get(multimedia_id)
+    if video:
+        video.delete()
+    return redirect(url_for('editar_perfil')) """
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
