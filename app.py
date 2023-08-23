@@ -37,12 +37,26 @@ def perfil_detallado(usuario_id):
     usuario = Usuario.query.get(usuario_id)
     googlemaps=GoogleMapsAPI()
     ciudad = googlemaps.buscar_ciudad(usuario.direccion)
+    fotos=Foto.query.filter_by(user_id=usuario.id).all()
+    videos=Video.query.filter_by(user_id=usuario.id).all()
+    audios=Audio.query.filter_by(user_id=usuario.id).all()
+    multimedia_list = []
+    for foto in fotos:
+        filename = os.path.basename(foto.foto_url)
+        
+        multimedia_list.append({"tipo": "foto", "url": filename})
+    for video in videos:
+        filename = os.path.basename(video.video_url)
+        multimedia_list.append({"tipo": "video", "url": filename})
+    for audio in audios:
+        filename = os.path.basename(audio.audio_url)
+        multimedia_list.append({"tipo": "audio", "url": filename})
     if usuario.tipo == 'musico':
         musico = Musico.query.get(usuario_id)
-        return render_template('perfil_musico.html', usuario=usuario, musico=musico, ciudad=ciudad)
+        return render_template('perfil_musico.html', usuario=usuario, musico=musico, ciudad=ciudad, multimedia_list=multimedia_list)
     else:
         grupo = Grupo.query.get(usuario_id)
-        return render_template('perfil_grupo.html', usuario=usuario, grupo=grupo, ciudad=ciudad)
+        return render_template('perfil_grupo.html', usuario=usuario, grupo=grupo, ciudad=ciudad, multimedia_list=multimedia_list)
 
 @app.route('/perfil_personal')
 def perfil_personal():
@@ -66,6 +80,9 @@ def perfil_personal():
     if usuario_actual.tipo == 'musico':
         musico_actual = Musico.query.get(usuario_actual.id)
         return render_template('perfil_personal_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad, multimedia_list=multimedia_list)
+    if usuario_actual.tipo == 'grupo':
+        grupo_actual = Grupo.query.get(usuario_actual.id)
+        return render_template('perfil_personal_grupo.html', usuario=usuario_actual, grupo=grupo_actual, ciudad=ciudad, multimedia_list=multimedia_list)
     
 @app.route('/editar_perfil')
 def editar_perfil():
@@ -79,13 +96,13 @@ def editar_perfil():
     for foto in fotos:
         filename = os.path.basename(foto.foto_url)
         
-        multimedia_list.append({"tipo": "foto", "url": filename})
+        multimedia_list.append({"tipo": "foto", "url": filename, "id": foto.id})
     for video in videos:
         filename = os.path.basename(video.video_url)
-        multimedia_list.append({"tipo": "video", "url": filename})
+        multimedia_list.append({"tipo": "video", "url": filename, "id": video.id})
     for audio in audios:
         filename = os.path.basename(audio.audio_url)
-        multimedia_list.append({"tipo": "audio", "url": filename})
+        multimedia_list.append({"tipo": "audio", "url": filename, "id": audio.id})
     if usuario_actual.tipo == 'musico':
         musico_actual = Musico.query.get(usuario_actual.id)
         return render_template('editar_perfil_musico.html', usuario=usuario_actual, musico=musico_actual, ciudad=ciudad, multimedia_list=multimedia_list)
@@ -131,7 +148,7 @@ def guardar_cambios_perfil():
         usuario_actual.save()
         return redirect(url_for('perfil_personal'))
     
-""" @app.route('/eliminar_foto/<int:multimedia_id>', methods=['POST'])
+@app.route('/eliminar_foto/<int:multimedia_id>', methods=['POST'])
 def eliminar_foto(multimedia_id):
     foto = Foto.query.get(multimedia_id)
     if foto:
@@ -150,7 +167,7 @@ def eliminar_video(multimedia_id):
     video = Video.query.get(multimedia_id)
     if video:
         video.delete()
-    return redirect(url_for('editar_perfil')) """
+    return redirect(url_for('editar_perfil'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -339,11 +356,24 @@ def inicio():
 
     # Filtrar los usuarios cercanos quitando los usuarios con like o dislike
     usuarios_cercanos = [usuario for usuario in usuarios_cercanos if usuario.id not in usuarios_con_like and usuario.id not in usuarios_con_dislike]
-
+    multimedia_list = []
+    for usuario in usuarios_cercanos:
+        fotos=Foto.query.filter_by(user_id=usuario.id).all()
+        videos=Video.query.filter_by(user_id=usuario.id).all()
+        audios=Audio.query.filter_by(user_id=usuario.id).all()
+        for foto in fotos:
+            filename = os.path.basename(foto.foto_url)
+            multimedia_list.append({"tipo": "foto", "url": filename, "user_id": foto.user_id})
+        for video in videos:
+            filename = os.path.basename(video.video_url)
+            multimedia_list.append({"tipo": "video", "url": filename, "user_id": video.user_id})
+        for audio in audios:
+            filename = os.path.basename(audio.audio_url)
+            multimedia_list.append({"tipo": "audio", "url": filename, "user_id": audio.user_id})
     if current_user.tipo=='musico':
-        return render_template('home_musico.html', usuarios_cercanos=usuarios_cercanos)
+        return render_template('home_musico.html', usuarios_cercanos=usuarios_cercanos, multimedia_list=multimedia_list)
     elif current_user.tipo=='grupo':
-        return render_template('home_grupo.html', usuarios_cercanos=usuarios_cercanos)
+        return render_template('home_grupo.html', usuarios_cercanos=usuarios_cercanos, multimedia_list=multimedia_list)
     
 @app.route('/dar_like/<int:usuario_id>', methods=['POST'])
 @login_required

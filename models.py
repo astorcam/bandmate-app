@@ -96,7 +96,7 @@ class Usuario(db.Model, UserMixin):
 class Audio(db.Model):
     __tablename__ = 'audio'
 
-    audio_id = db.Column('AUDIO_ID', db.Integer, primary_key=True)
+    id = db.Column('AUDIO_ID', db.Integer, primary_key=True)
     user_id = db.Column('USER_ID', db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
     audio_url = db.Column('AUDIO_URL', db.String(255))
 
@@ -117,7 +117,7 @@ class Audio(db.Model):
 class Foto(db.Model):
     __tablename__ = 'foto'
 
-    foto_id = db.Column('FOTO_ID', db.Integer, primary_key=True)
+    id = db.Column('FOTO_ID', db.Integer, primary_key=True)
     user_id = db.Column('USER_ID', db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
     foto_url = db.Column('FOTO_URL', db.String(255))
 
@@ -138,7 +138,7 @@ class Foto(db.Model):
 class Video(db.Model):
     __tablename__ = 'video'
 
-    video_id = db.Column('VIDEO_ID', db.Integer, primary_key=True)
+    id = db.Column('VIDEO_ID', db.Integer, primary_key=True)
     user_id = db.Column('USER_ID', db.Integer, db.ForeignKey('usuario.ID'), nullable=False)
     video_url = db.Column('VIDEO_URL', db.String(255))
 

@@ -62,16 +62,27 @@ body{
 }
 
 .edit-files {
-  background-color: rgba(255, 255, 255, 0,5); /* Ajusta el último valor (0.5) para la opacidad deseada */
-  border: none; /* Opcional: eliminar el borde si no lo necesitas */
+  background-color: #8d7563;
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid yellowgreen;
+  margin-bottom: 10px;
 }
 
 /* music player */
 
-audio {
+.audio-perfil {
   filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
   width: 500px;
   height: 100px;
+  padding-bottom: 20px;
+  margin-left: 70px;
+  margin-right: 50px;
+}
+.audio-inicio{
+  width: 250px;
+  height: 100px;
+  filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
   padding-bottom: 20px;
   margin-left: 70px;
   margin-right: 50px;

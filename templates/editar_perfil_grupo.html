@@ -101,24 +101,20 @@
                       <div class='row align-items-center my-2 mx-2'>
                         <div class='col'>
                           <h1 class="card-title" style="font-weight: bold;">{{usuario.nombre|capitalize}}</h1>
-                            <p class="card-title" style="font-weight: bold;">{{musico.instrumento_principal|capitalize}}</p>
                         </div>
                       </div>
                       <div class='row align-items-center my-2 mx-2'>
                         <div class='col'>
                           <i class="bi bi-geo-alt-fill">{{ciudad|capitalize}}</i>
                         </div>
-                        <div class='col'>                        
-                          <i class="bi bi-person-fill">{{musico.sexo|capitalize}}</i>
-                        </div>
                       </div>
                       <div class="card-body">
                         <div class='row my-2'>
                           <div class='col'>
-                            <h5 class="card-title" style="font-weight: bold;">Edad</h5>
+                            <h5 class="card-title" style="font-weight: bold;">Busca</h5>
                           </div>
                           <div class='col'>                        
-                            <p class="card-text">{{musico.edad}}</p>
+                            <p class="card-text">{{grupo.busca_instrumento|capitalize}}</p>
                           </div>
                         </div>
                         <form method="POST" action="/guardar_cambios_perfil" enctype="multipart/form-data">

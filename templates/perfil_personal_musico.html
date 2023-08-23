@@ -70,7 +70,7 @@
                               Tu navegador no soporta el elemento de video. 
                           </video>
                           {% elif multimedia.tipo == 'audio' %}
-                            <audio controls>
+                            <audio controls class='audio-perfil'>
                               <source src="{{ url_for('static', filename='uploads/' + multimedia.url) }}"  type="audio/mpeg">
                               Tu navegador no soporta el elemento de audio.  
                               </audio>
