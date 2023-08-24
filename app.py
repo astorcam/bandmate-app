@@ -6,7 +6,8 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 import os
 
 
-from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI, Foto, Video, Audio
+
+from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI, Foto, Video, Audio, Mensaje
 
 app = Flask(__name__)
 app.secret_key = 'CLAVE_SECRETA'
@@ -30,6 +31,7 @@ with app.app_context():
 @app.route('/')
 def portada():
     return render_template('portada.html')
+
 
 @app.route('/perfil_detallado/<int:usuario_id>')
 @login_required
@@ -401,6 +403,58 @@ def dar_dislike(usuario_id):
         dislike.save()
     else:
         return 404
+    
+@app.route('/matches')
+@login_required
+def matches():
+    if current_user.tipo == 'musico':
+        matches = Match.query.filter_by(musico_id=current_user.id).all()
+        usuarios_match=[]
+        multimedia_list=[]
+        for match in matches:
+            usuarios_match.append(Usuario.query.get(match.grupo_id))
+        print(usuarios_match)
+        for usuario in usuarios_match:
+            foto=Foto.query.filter_by(user_id=usuario.id).first()
+            if foto:
+                filename = os.path.basename(foto.foto_url)
+                multimedia_list.append({"url": filename, "user_id": foto.user_id})
+    else:
+        matches = Match.query.filter_by(grupo_id=current_user.id).all()
+        usuarios_match=[]
+        multimedia_list=[]
+        for match in matches:
+            usuarios_match.append(Usuario.query.get(match.musico_id))
+        for usuario in usuarios_match:
+            foto=Foto.query.filter_by(user_id=usuario.id).first()
+            if foto:
+                filename = os.path.basename(foto.foto_url)
+                multimedia_list.append({"url": filename, "user_id": foto.user_id})
+    return render_template('listaChats.html', usuarios_match=usuarios_match, multimedia_list=multimedia_list)
+    
+@app.route('/chat/<int:usuario_id>')
+@login_required
+def chat(usuario_id):
+    usuario_actual = current_user
+    usuario = Usuario.query.get(usuario_id)
+    mensajes = Mensaje.query.filter_by(emisor_id=usuario_actual.id, receptor_id=usuario_id).order_by(Mensaje.fecha.asc()).all()
+    mensajes.extend(Mensaje.query.filter_by(emisor_id=usuario_id, receptor_id=usuario_actual.id).order_by(Mensaje.fecha.asc()).all())
+    mensajes.sort(key=lambda mensaje: mensaje.fecha)
+    filename = ""
+    foto=Foto.query.filter_by(user_id=usuario.id).first()
+    if foto:
+        filename = os.path.basename(foto.foto_url)
+    return render_template('chat.html', usuario=usuario, mensajes=mensajes, filename=filename)
+ 
+@app.route('/enviar_mensaje/<int:usuario_id>', methods=['POST'])
+@login_required
+def enviar_mensaje(usuario_id):
+    usuario_actual = current_user
+    texto = clean(request.form['texto'])
+    mensaje = Mensaje(emisor_id=usuario_actual.id, receptor_id=usuario_id, texto=texto)
+    mensaje.save()
+    return redirect(url_for('chat', usuario_id=usuario_id))   
+
 
 #funciones
 @login_manager.user_loader

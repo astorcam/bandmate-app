@@ -207,6 +207,10 @@ class Mensaje(db.Model):
     texto = db.Column(db.String(255), nullable=False)
     fecha = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
 class Like(db.Model):
     __tablename__ = 'like_table'
 
