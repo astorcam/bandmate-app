@@ -1,20 +1,24 @@
-from flask import Flask, render_template, request, redirect, url_for, flash,jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash,jsonify, session
 from db import db
 from flask_bcrypt import Bcrypt
 from bleach import  clean
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 import os
+import time
+import re
+import spotipy
+from spotipy import Spotify, SpotifyOAuth, SpotifyClientCredentials
 
 
 
-from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI, Foto, Video, Audio, Mensaje
+from models import Usuario, Musico, Grupo, Like, Dislike, Match, GoogleMapsAPI, Foto, Video, Audio, Mensaje, SpotifyAPI
 
 app = Flask(__name__)
 app.secret_key = 'CLAVE_SECRETA'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 bcrypt = Bcrypt(app)
 
-# Configuración de la base de datos
+#Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:psswrd@localhost/bandmate'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db.init_app(app)
@@ -22,16 +26,15 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# Crear todas las tablas en la base de datos
+#Crear todas las tablas en la base de datos
 with app.app_context():
     #db.drop_all()
     db.create_all()
 
-# Rutas de la aplicación
+#Rutas de la aplicación
 @app.route('/')
 def portada():
     return render_template('portada.html')
-
 
 @app.route('/perfil_detallado/<int:usuario_id>')
 @login_required
@@ -91,6 +94,7 @@ def editar_perfil():
     usuario_actual = current_user
     googlemaps=GoogleMapsAPI()
     ciudad = googlemaps.buscar_ciudad(usuario_actual.direccion)
+    
     fotos=Foto.query.filter_by(user_id=usuario_actual.id).all()
     videos=Video.query.filter_by(user_id=usuario_actual.id).all()
     audios=Audio.query.filter_by(user_id=usuario_actual.id).all()
@@ -148,6 +152,12 @@ def guardar_cambios_perfil():
                 nuevo_video.save()
 
         usuario_actual.save()
+        if usuario_actual.tipo=='grupo':
+            grupo_actual = Grupo.query.get(usuario_actual.id)
+            instrumentos=clean(request.form['instrumentos'])
+            grupo_actual.instrumentos = instrumentos
+            grupo_actual.save()            
+            
         return redirect(url_for('perfil_personal'))
     
 @app.route('/eliminar_foto/<int:multimedia_id>', methods=['POST'])
@@ -288,7 +298,6 @@ def actualizar_contraseña():
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
-        # Obtener los datos del formulario de registro
         nombre = clean(request.form['nombre'])
         email = clean(request.form['email'])
         contraseña = clean(request.form['contraseña'])
@@ -297,12 +306,13 @@ def registro():
         tipo_usuario = clean(request.form['tipo_usuario'])
         busca_genero = clean(request.form['busca_genero'])
         
-        # Verifica que todos los campos del formulario estén completados
         if not nombre or not email or not contraseña or not direccion or not genero_musical or not tipo_usuario or not busca_genero:
             flash('Por favor, completa todos los campos del formulario.', 'error')
             return redirect(url_for('registro'))
         
-        # Verifica que el usuario no esté creado ya
+        if not validate_email(email):
+            flash('El correo electrónico no cumple con el formato requerido. Por favor, utiliza otro correo.', 'error')
+            return redirect(url_for('registro'))
         usuario_existente = Usuario.query.filter_by(email=email).first()
         if usuario_existente:
             flash('El correo electrónico ya está registrado. Por favor, utiliza otro correo.', 'error')
@@ -377,7 +387,7 @@ def inicio():
     elif current_user.tipo=='grupo':
         return render_template('home_grupo.html', usuarios_cercanos=usuarios_cercanos, multimedia_list=multimedia_list)
     
-@app.route('/dar_like/<int:usuario_id>', methods=['POST'])
+@app.route('/dar_like/<int:usuario_id>', methods=['GET', 'POST'])
 @login_required
 def dar_like(usuario_id):
     usuario = Usuario.query.get(usuario_id)
@@ -390,8 +400,13 @@ def dar_like(usuario_id):
                 match = Match(musico_id=current_user.id, grupo_id=usuario_id)
             else:
                 match = Match(musico_id=usuario_id, grupo_id=current_user.id)
-            match.save()            
+            match.save()
+            return jsonify({'message': 'Hubo match'})
+            
+        else:
+            return jsonify({'message': 'No hubo match'})
     return jsonify({'message': 'Operación completada'})
+
 
 
 @app.route('/dar_dislike/<int:usuario_id>', methods=['POST'])
@@ -403,6 +418,11 @@ def dar_dislike(usuario_id):
         dislike.save()
     else:
         return 404
+    
+@app.route('/match')
+@login_required
+def match():
+    return render_template('match.html')
     
 @app.route('/matches')
 @login_required
@@ -455,11 +475,57 @@ def enviar_mensaje(usuario_id):
     mensaje.save()
     return redirect(url_for('chat', usuario_id=usuario_id))   
 
+@app.route('/SpotifyAuth')
+@login_required
+def spotify_auth():
+    sp_oauth=SpotifyAPI().create_Spotify_OAuth()
+    auth_url = sp_oauth.get_authorize_url()
+    return redirect(auth_url)
+
+@app.route("/callback")
+def callback():
+    sp_oauth=SpotifyAPI().create_Spotify_OAuth()
+    token_info=sp_oauth.get_access_token(request.args["code"])
+    session["token_info"] = token_info
+    return redirect(url_for("get_cancion_fav"))
+
+@app.route("/get_cancion_fav")
+@login_required
+def get_cancion_fav():
+    token_info=get_token()
+    sp=spotipy.Spotify(auth=token_info['access_token'])
+    results=sp.current_user_saved_tracks(limit=1)
+    items = results['items']   
+    nombre_cancion =items[0]['track']['name']
+    current_user.cancion_fav = nombre_cancion
+    track_id=items[0]['track']['id']
+    track_info=sp.track(track_id)
+    preview_url = track_info['preview_url']
+    current_user.cancion_url = preview_url
+    current_user.save()
+    return redirect(url_for("editar_perfil"))
 
 #funciones
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
+
+def get_token():
+    token_info=session.get("token_info", None)
+    if not token_info:
+        raise "Exception"
+    now=time.time()
+    is_expired=token_info["expires_at"]-now<60
+    refresh_token=token_info["refresh_token"]
+    if is_expired:
+        sp_oauth=SpotifyAPI().create_Spotify_OAuth()
+        token_info=sp_oauth.refresh_access_token(refresh_token)
+    return token_info
+
+def validate_email(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

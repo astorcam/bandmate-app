@@ -1,13 +1,19 @@
+from flask import url_for
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from db import db
 from datetime import datetime
 import googlemaps
+from spotipy.oauth2 import SpotifyOAuth
 import requests
 from math import radians, sin, cos, sqrt, atan2
+from spotipy import Spotify, SpotifyOAuth, SpotifyClientCredentials
 
-
+#Google Maps API Key
 API_KEY='AIzaSyBgPGO5aDpDxfjFD5W_69CWy2b0dJXgolw'
 
+#Spotify API Key
+CLIENT_ID = '80f64c5381704645a4ec05a4e6b04867'
+CLIENT_SECRET = '0eeb4c4cdb834aa6aa5345227bbd866a'
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
@@ -19,12 +25,14 @@ class Usuario(db.Model, UserMixin):
     contraseña = db.Column('CONTRASEÑA', db.String(255), nullable=False)
     direccion = db.Column('DIRECCION', db.String(255), nullable=False)
     cancion_fav = db.Column('CANCION_FAV', db.String(255))
+    cancion_url = db.Column('CANCION_URL', db.String(255))
     genero_musical = db.Column('GENERO_MUSICAL', db.String(255), nullable=False)
     descripcion = db.Column('DESCRIPCION', db.String(255))
     busca_genero = db.Column('BUSCA_GENERO', db.String(255), nullable=False)
     busca_distancia = db.Column('BUSCA_DISTANCIA', db.Integer)
     longitud = db.Column('LONGITUD', db.Float)
     latitud = db.Column('LATITUD', db.Float)
+
     
     def __init__(self, tipo, nombre, email, contraseña, direccion, genero_musical, busca_genero,  ):
         self.tipo = tipo
@@ -34,6 +42,7 @@ class Usuario(db.Model, UserMixin):
         self.direccion = direccion
         self.genero_musical = genero_musical
         self.cancion_fav = None
+        self.cancion_url = None
         self.descripcion=None
         self.busca_genero = busca_genero
         self.busca_distancia = 50 # Por defecto 50 km
@@ -271,3 +280,14 @@ class GoogleMapsAPI:
             ciudad = response['results'][0]['address_components'][2]['long_name']
             return ciudad
         return None
+    
+class SpotifyAPI():
+    def create_Spotify_OAuth(self):
+        return SpotifyOAuth(
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            redirect_uri=url_for('callback', _external=True),
+            scope="user-library-read",
+        )
+
+        

@@ -15,6 +15,14 @@ body{
     font-family: 'DM Sans', sans-serif;
     font-weight: bold;
   }
+  .h_match {
+    color: #12ff46;
+    font-size: 156px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: bold;
+    margin: 0 auto; /* Centra el contenedor en la pantalla */
+    padding: 300px; /* Espacio alrededor del formulario dentro del contenedor */
+  }
   .p_ayuda {
     color: #12ff46;
     font-size: 32px;

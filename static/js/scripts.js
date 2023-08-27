@@ -48,17 +48,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Content-Type": "application/json",
             },
         })
-          .then(response => response.json())
-          .then(data => {
-              console.log("Like registrado:", data);
-          })
-          .catch(error => {
-              console.error("Error al registrar el like:", error);
-          });
-          currentIndex++;
-          showUser(currentIndex);
-      });
-  });
+        .then(response => response.json())
+        .then(data => {
+            console.log("Respuesta del servidor:", data.message);
+            if (data.message === 'Hubo match') {
+                window.location.href = "/match";
+            }
+        })
+        .catch(error => {
+            console.error("Error al registrar el like:", error);
+        });
+        currentIndex++;
+        showUser(currentIndex);
+    });
+});
 
   btnDislikes.forEach(btn => {
         btn.addEventListener("click", () => {

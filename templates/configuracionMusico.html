@@ -10,39 +10,38 @@
 <body>
     <div id="viewport">
         <!-- Sidebar -->
-         <!-- Sidebar -->
-         <div id="sidebar">
+        <div id="sidebar">
           <header>
             <img class='img' src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
           </header>
           <ul class="nav">
             <li>
-              <a href="{{url_for('inicio')}}">
+              <a style='text-decoration: none;' href="{{url_for('inicio')}}">
                 <i class="bi bi-house-door-fill"></i>  Inicio
               </a>
             </li>
             <li>
-              <a href="{{url_for('perfil_personal')}}">
+              <a style='text-decoration: none;' href="{{url_for('perfil_personal')}}">
                 <i class="bi bi-person-fill"></i> Perfil
               </a>
             </li>
             <li>
-              <a href="{{url_for('matches')}}">
+              <a style='text-decoration: none;' href="{{url_for('matches')}}">
                 <i class="bi bi-chat-dots-fill"></i> Chats
               </a>
             </li>
             <li>
-              <a href="{{url_for('configuracion')}}">
+              <a style='text-decoration: none;' href="{{url_for('configuracion')}}">
                 <i class="bi bi-gear-fill"></i> Configuración
               </a>
             </li>
             <li>
-              <a href="{{url_for('ayuda')}}">
+              <a style='text-decoration: none;' href="{{url_for('ayuda')}}">
                 <i class="bi bi-info-circle-fill"></i> Ayuda
               </a>
             </li>
             <li>
-              <a href="{{url_for('logout')}}">
+              <a style='text-decoration: none; ' href="{{url_for('logout')}}">
                 <i class="bi bi-box-arrow-left"></i> Cerrar sesión
               </a>
             </li>
@@ -53,7 +52,7 @@
           <div class="container">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
-              <div class="alert alert-success">
+              <div class="alert alert-primary">
                 <ul>
                   {% for message in messages %}
                     <li>{{ message }}</li>

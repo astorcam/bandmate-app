@@ -12,46 +12,46 @@
     <div id="viewport">
         <!-- Sidebar -->
         <div id="sidebar">
-            <header>
-              <img class='img' src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
-            </header>
-            <ul class="nav">
-              <li>
-                <a href="{{url_for('inicio')}}">
-                  <i class="bi bi-house-door-fill"></i>  Inicio
-                </a>
-              </li>
-              <li>
-                <a href="{{url_for('perfil_personal')}}">
-                  <i class="bi bi-person-fill"></i> Perfil
-                </a>
-              </li>
-              <li>
-                <a href="{{url_for('matches')}}">
-                  <i class="bi bi-chat-dots-fill"></i> Chats
-                </a>
-              </li>
-              <li>
-                <a href="{{url_for('configuracion')}}">
-                  <i class="bi bi-gear-fill"></i> Configuración
-                </a>
-              </li>
-              <li>
-                <a href="{{url_for('ayuda')}}">
-                  <i class="bi bi-info-circle-fill"></i> Ayuda
-                </a>
-              </li>
-              <li>
-                <a href="{{url_for('logout')}}">
-                  <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-                </a>
-              </li>
-            </ul>
-          </div>
+          <header>
+            <img class='img' src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+          </header>
+          <ul class="nav">
+            <li>
+              <a style='text-decoration: none;' href="{{url_for('inicio')}}">
+                <i class="bi bi-house-door-fill"></i>  Inicio
+              </a>
+            </li>
+            <li>
+              <a style='text-decoration: none;' href="{{url_for('perfil_personal')}}">
+                <i class="bi bi-person-fill"></i> Perfil
+              </a>
+            </li>
+            <li>
+              <a style='text-decoration: none;' href="{{url_for('matches')}}">
+                <i class="bi bi-chat-dots-fill"></i> Chats
+              </a>
+            </li>
+            <li>
+              <a style='text-decoration: none;' href="{{url_for('configuracion')}}">
+                <i class="bi bi-gear-fill"></i> Configuración
+              </a>
+            </li>
+            <li>
+              <a style='text-decoration: none;' href="{{url_for('ayuda')}}">
+                <i class="bi bi-info-circle-fill"></i> Ayuda
+              </a>
+            </li>
+            <li>
+              <a style='text-decoration: none; ' href="{{url_for('logout')}}">
+                <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+              </a>
+            </li>
+          </ul>
+        </div>
         <!-- Content -->
         <div id="content">
           <div class="container">     
-            <div class="row justify-content-center align-items-center" style="height: 100vh;"> 
+            <div class="row justify-content-center align-items-center" style="min-height: 20vh;">
               <div class="card transparent-card">
                     {% for multimedia in multimedia_list %}
                         {% if multimedia.tipo == 'foto' %}
@@ -119,6 +119,14 @@
                         </div>
                         <form method="POST" action="/guardar_cambios_perfil" enctype="multipart/form-data">
                           <div class='row my-2'>
+                            <div class='col'>
+                              <h5 class="card-title" style="font-weight: bold;">Instrumentos</h5>
+                            </div>
+                            <div class='col'>                        
+                                  <input type="text" name='instrumentos' class="form-control" id="validationDefault01"  placeholder=" " value="{{ grupo.instrumentos }}">
+                            </div>
+                          </div>
+                          <div class='row my-2'>
                           <div class='col'>
                             <h5 class="card-title" style="font-weight: bold;">Género musical</h5>
                           </div>
@@ -170,7 +178,10 @@
                             <h5 class="card-title" style="font-weight: bold;">Canción favorita</h5>
                           </div>
                           <div class='col'>                        
-                            <i class="bi bi-file-music-fill"></i>
+                            <p class="card-text">{{usuario.cancion_fav}}</p>
+                            <audio controls src="{{usuario.cancion_url}}" type="audio/mpeg">
+                              Tu navegador no soporta el elemento de audio.
+                            </audio>
                           </div>
                         </div>
                         <div class='row my-2'>
