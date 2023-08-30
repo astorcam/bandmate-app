@@ -63,61 +63,66 @@
                 {% endif %}
               {% endwith %}
               <div class="row justify-content-center align-items-center" style="height: 100vh;">
-                    {% for usuario in usuarios_cercanos %}
-                    <div class="card usuario-card " id="usuario-{{ loop.index }}" style="width: 24rem; background-color: #12ff46; margin-bottom: 20px;">
-                      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                {% for usuario in usuarios_cercanos %}
+                <div class="card usuario-card " id="usuario-{{ loop.index }}" style="width: 24rem; background-color: #12ff46; margin-bottom: 20px;">
+                    <div id="carouselExampleIndicators-{{ loop.index }}" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
-                          {% for multimedia in multimedia_list %}
-                          <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active"{% endif %}></li>
-                          {% endfor %}
-                      </ol>
-                      <div class="carousel-inner">
-                          {% for multimedia in multimedia_list %}
-                          <div class="carousel-item {% if loop.first %}active{% endif %}">
-                            {% if multimedia.tipo == 'foto' and multimedia.user_id == usuario.id %}
-                            <img src="{{ url_for('static', filename='uploads/' + multimedia.url) }}" style='max-width: 500px; max-height:500px;' alt="Foto" >
-                              {% elif multimedia.tipo == 'video' and multimedia.user_id == usuario.id %}
-                              <video controls class="mx-auto" style='width: 24rem; max-width: 720px; max-height:480px;'>
-                                  <source src="{{ url_for('static', filename='uploads/' + multimedia.url) }}" type="video/mp4">
-                                  Tu navegador no soporta el elemento de video. 
-                              </video>
-                              {% elif multimedia.tipo == 'audio' and multimedia.user_id == usuario.id %}
-                                <audio controls class='audio-inicio' >
-                                  <source src="{{ url_for('static', filename='uploads/' + multimedia.url) }}"  type="audio/mpeg">
-                                  Tu navegador no soporta el elemento de audio.  
-                                  </audio>
-                              {% endif %}
-                          </div>
-                          {% endfor %}
-                      </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
+                            {% for multimedia in multimedia_list %}
+                                {% if multimedia.user_id == usuario.id %}
+                                    <li data-target="#carouselExampleIndicators-{{ loop.index }}" data-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active"{% endif %}></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+                            {% for multimedia in multimedia_list %}
+                                {% if multimedia.user_id == usuario.id %}
+                                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                        {% if multimedia.tipo == 'foto' %}
+                                            <img src="{{ url_for('static', filename='uploads/' + multimedia.url) }}" style='max-width: 500px; max-height:500px;' alt="Foto" >
+                                        {% elif multimedia.tipo == 'video' %}
+                                            <video controls class="mx-auto" style='width: 24rem; max-width: 720px; max-height:480px;'>
+                                                <source src="{{ url_for('static', filename='uploads/' + multimedia.url) }}" type="video/mp4">
+                                                Tu navegador no soporta el elemento de video. 
+                                            </video>
+                                        {% elif multimedia.tipo == 'audio' %}
+                                            <audio controls class='audio-inicio' >
+                                                <source src="{{ url_for('static', filename='uploads/' + multimedia.url) }}"  type="audio/mpeg">
+                                                Tu navegador no soporta el elemento de audio.  
+                                            </audio>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators-{{ loop.index }}" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
                         </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators-{{ loop.index }}" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
                         </a>
-                      </div>
-                          <div class="card-body text-center d-flex flex-column">
-                              <h5 class="card-title" style="font-weight: bold;">{{ usuario.nombre|capitalize }}</h5>
-                              <p class="card-text">Busca: {{ usuario.busca_instrumento|capitalize }}</p>
-                              <p class="card-text">Género: {{ usuario.genero_musical|capitalize }}</p>
-                              <a class="black-icon" href="{{ url_for('perfil_detallado', usuario_id=usuario.id) }}">
-                                  <i class="bi bi-info-circle"></i>
-                              </a>
-                          </div>
-                          <div class="card-body text-center">
-                                <button type="button" class="btn btn-success btn-like" data-usuario-id="{{ usuario.id }}">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-dislike" data-usuario-id="{{ usuario.id }}">
-                                    <i class="bi bi-hand-thumbs-down-fill"></i>
-                                </button>
-                          </div>
-                      </div>
-                  {% endfor %}
-              </div>
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title" style="font-weight: bold;">{{ usuario.nombre|capitalize }}</h5>
+                        <p class="card-text">Busca: {{ usuario.busca_instrumento|capitalize }}</p>
+                        <p class="card-text">Género: {{ usuario.genero_musical|capitalize }}</p>
+                        <a class="black-icon" href="{{ url_for('perfil_detallado', usuario_id=usuario.id) }}">
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+                        <button type="button" class="btn btn-success btn-like" data-usuario-id="{{ usuario.id }}">
+                            <i class="bi bi-hand-thumbs-up-fill"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-dislike" data-usuario-id="{{ usuario.id }}">
+                            <i class="bi bi-hand-thumbs-down-fill"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
           </div>
       </div>
       </div id="viewport">

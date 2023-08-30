@@ -182,6 +182,9 @@
                             <audio controls src="{{usuario.cancion_url}}" type="audio/mpeg">
                               Tu navegador no soporta el elemento de audio.
                             </audio>
+                            <a class="btn btn-dark"  href="{{ url_for('spotify_auth') }}">                        
+                              <i class="bi bi-file-music-fill"> Muestra tus canciones favoritas </i>
+                             </a>
                           </div>
                         </div>
                         <div class='row my-2'>

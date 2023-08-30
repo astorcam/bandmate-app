@@ -18,7 +18,7 @@ app.secret_key = 'CLAVE_SECRETA'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 bcrypt = Bcrypt(app)
 
-#Configuración de la base de datos
+#configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:psswrd@localhost/bandmate'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db.init_app(app)
@@ -26,12 +26,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-#Crear todas las tablas en la base de datos
+#crear todas las tablas en la base de datos
 with app.app_context():
     #db.drop_all()
     db.create_all()
 
-#Rutas de la aplicación
+#rutas de la aplicación
 @app.route('/')
 def portada():
     return render_template('portada.html')
@@ -47,8 +47,7 @@ def perfil_detallado(usuario_id):
     audios=Audio.query.filter_by(user_id=usuario.id).all()
     multimedia_list = []
     for foto in fotos:
-        filename = os.path.basename(foto.foto_url)
-        
+        filename = os.path.basename(foto.foto_url)      
         multimedia_list.append({"tipo": "foto", "url": filename})
     for video in videos:
         filename = os.path.basename(video.video_url)
@@ -186,7 +185,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         contraseña_ingresada = request.form['contraseña']
-        #verificacione de las credenciales
+        #verificaciones de las credenciales
         user = Usuario.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.contraseña, contraseña_ingresada):
             login_user(user)
@@ -366,7 +365,7 @@ def inicio():
     dislikes = Dislike.query.filter_by(emisor_id=current_user.id).all()
     usuarios_con_dislike = [dislike.receptor_id for dislike in dislikes]
 
-    # Filtrar los usuarios cercanos quitando los usuarios con like o dislike
+    #filtrar los usuarios cercanos quitando los usuarios con like o dislike
     usuarios_cercanos = [usuario for usuario in usuarios_cercanos if usuario.id not in usuarios_con_like and usuario.id not in usuarios_con_dislike]
     multimedia_list = []
     for usuario in usuarios_cercanos:
@@ -382,6 +381,7 @@ def inicio():
         for audio in audios:
             filename = os.path.basename(audio.audio_url)
             multimedia_list.append({"tipo": "audio", "url": filename, "user_id": audio.user_id})
+        print(multimedia_list)
     if current_user.tipo=='musico':
         return render_template('home_musico.html', usuarios_cercanos=usuarios_cercanos, multimedia_list=multimedia_list)
     elif current_user.tipo=='grupo':

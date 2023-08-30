@@ -11,7 +11,7 @@ from spotipy import Spotify, SpotifyOAuth, SpotifyClientCredentials
 #Google Maps API Key
 API_KEY='AIzaSyBgPGO5aDpDxfjFD5W_69CWy2b0dJXgolw'
 
-#Spotify API Key
+#Spotify API Keys
 CLIENT_ID = '80f64c5381704645a4ec05a4e6b04867'
 CLIENT_SECRET = '0eeb4c4cdb834aa6aa5345227bbd866a'
 
@@ -45,8 +45,7 @@ class Usuario(db.Model, UserMixin):
         self.cancion_url = None
         self.descripcion=None
         self.busca_genero = busca_genero
-        self.busca_distancia = 50 # Por defecto 50 km
-        # Llamada a la función para buscar latitud y longitud
+        self.busca_distancia = 50 #por defecto 50 km
         google_maps_api = GoogleMapsAPI()
         location= google_maps_api.buscar_latitud_longitud(direccion)
         self.latitud=location['lat']
@@ -82,20 +81,13 @@ class Usuario(db.Model, UserMixin):
 
     @classmethod
     def calcular_distancia(self, latitud1, longitud1, latitud2, longitud2):
-           # Radio de la Tierra en kilómetros
         radio_tierra = 6371.0
-
-        # Convertir las coordenadas de latitud y longitud a radianes
         latitud1 = radians(latitud1)
         longitud1 = radians(longitud1)
         latitud2 = radians(latitud2)
         longitud2 = radians(longitud2)
-
-        # Diferencias de latitud y longitud
         delta_latitud = latitud2 - latitud1
         delta_longitud = longitud2 - longitud1
-
-        # Fórmula de Haversine para calcular la distancia entre dos puntos en una esfera
         a = sin(delta_latitud / 2)**2 + cos(latitud1) * cos(latitud2) * sin(delta_longitud / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         distancia = radio_tierra * c
@@ -194,7 +186,6 @@ class Grupo(Usuario):
         self.busca_instrumento = busca_instrumento
         self.instrumentos = None
 
-# Clase Match
 class Match(db.Model):
     __tablename__ = 'match_table'
 
@@ -206,7 +197,6 @@ class Match(db.Model):
         db.session.add(self)
         db.session.commit()
 
-# Clase Mensaje
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
 
