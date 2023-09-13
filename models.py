@@ -9,11 +9,11 @@ from math import radians, sin, cos, sqrt, atan2
 from spotipy import Spotify, SpotifyOAuth, SpotifyClientCredentials
 
 #Google Maps API Key
-API_KEY='AIzaSyBgPGO5aDpDxfjFD5W_69CWy2b0dJXgolw'
+API_KEY='********'
 
 #Spotify API Keys
-CLIENT_ID = '80f64c5381704645a4ec05a4e6b04867'
-CLIENT_SECRET = '0eeb4c4cdb834aa6aa5345227bbd866a'
+CLIENT_ID = '********'
+CLIENT_SECRET = '********'
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
@@ -259,7 +259,7 @@ class GoogleMapsAPI:
     
     def buscar_ciudad(self,direccion):
         #llamada a la API de Google Maps
-        API_KEY='AIzaSyAO-2U9g7LQ0fHvkI4IfDBL_adMQflkcV4'
+        API_KEY='*******'
         params = {
         'key': API_KEY,
         'address': direccion}
